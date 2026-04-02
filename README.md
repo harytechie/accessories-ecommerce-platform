@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Atelier Boutique — React E-Commerce App
 
 A luxury e-commerce React application inspired by the **"Digital Atelier"** design system from the Stitch project. Built with an editorial, feminine aesthetic featuring glassmorphism, warm rose tones, and Noto Serif typography.
@@ -101,3 +102,7 @@ Sourced directly from the **Stitch "The Editorial Ethereal"** design system:
 ## 💡 Promo Code
 
 Try entering **`ATELIER10`** in the cart for a 10% discount.
+=======
+# accessories-ecommerce-platform
+tylish accessories, simplified. Browse our curated collection of jewelry and bags with a fast, modern shopping experience. Your next favorite piece is just a click away.
+>>>>>>> 968ff7b6a66fb971180726b0265bdcd02d1902ef

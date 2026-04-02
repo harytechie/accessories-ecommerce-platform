@@ -5,7 +5,7 @@ import './BottomNav.css';
 
 const navItems = [
   { id: 'home', label: 'Home', icon: 'home', path: '/' },
-  { id: 'shawls', label: 'Shawls', icon: 'styler', path: '/products/shawls' },
+  { id: 'shawls', label: 'Shawls', icon: 'checkroom', path: '/products/shawls' },
   { id: 'gifts', label: 'Gifts', icon: 'card_giftcard', path: '/products/gifts' },
   { id: 'profile', label: 'Profile', icon: 'person', path: '/profile' },
 ];

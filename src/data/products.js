@@ -182,7 +182,7 @@ export const products = [
 
 export const categories = [
   { id: "all", label: "All", icon: "auto_awesome" },
-  { id: "shawls", label: "Shawls", icon: "styler" },
+  { id: "shawls", label: "Shawls", icon: "checkroom" },
   { id: "gifts", label: "Gifts", icon: "card_giftcard" },
   { id: "accessories", label: "Accessories", icon: "diamond" },
 ];
