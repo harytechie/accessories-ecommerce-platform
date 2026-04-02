@@ -1,0 +1,117 @@
+/* src/components/Header/Header.css */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--nav-height);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-5);
+  transition: all var(--transition-smooth);
+}
+
+.header.scrolled {
+  background: rgba(250, 249, 246, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 1px 20px rgba(48, 51, 48, 0.06);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header-logo {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.header-logo-title {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-on-surface);
+  cursor: pointer;
+}
+
+.header-logo-tagline {
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: var(--color-on-surface-variant);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-top: 1px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.header-cart-btn {
+  position: relative;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--radius-full);
+  background: var(--color-surface-container-low);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-base);
+  color: var(--color-on-surface);
+}
+
+.header-cart-btn:hover {
+  background: var(--color-surface-container);
+  transform: scale(1.05);
+}
+
+.header-cart-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  min-width: 1.1rem;
+  height: 1.1rem;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-size: 0.6rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 2px;
+  line-height: 1;
+  animation: fadeIn 0.2s ease;
+}
+
+.header-search-btn {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--radius-full);
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-on-surface-variant);
+  transition: all var(--transition-base);
+}
+
+.header-search-btn:hover {
+  color: var(--color-on-surface);
+  background: var(--color-surface-container-low);
+}

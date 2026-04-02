@@ -1,0 +1,125 @@
+/* src/components/BottomNav/BottomNav.css */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--bottom-nav-height);
+  background: rgba(250, 249, 246, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(176, 179, 174, 0.15);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--space-4);
+  box-shadow: 0 -4px 20px rgba(48, 51, 48, 0.05);
+}
+
+.bottom-nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 480px;
+}
+
+/* Each nav tab: stack pill+icon above label */
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: var(--space-2) var(--space-2);
+  cursor: pointer;
+  background: none;
+  border: none;
+  transition: color var(--transition-base);
+  position: relative;
+  text-decoration: none;
+  color: var(--color-on-surface-variant);
+  min-width: 60px;
+}
+
+.nav-item:hover {
+  color: var(--color-primary);
+}
+
+.nav-item.active {
+  color: var(--color-primary);
+}
+
+/*
+  Icon wrapper doubles as the pill container.
+  Fixed pill dimensions (64×32) so the pill
+  never bleeds outside and the icon centers perfectly.
+*/
+.nav-item-icon-wrap {
+  position: relative;
+  width: 64px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Selection pill — fills the wrapper exactly */
+.nav-item-icon-bg {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-full);
+  background: var(--color-primary-container);
+  opacity: 0;
+  transition: opacity var(--transition-smooth);
+}
+
+.nav-item.active .nav-item-icon-bg {
+  opacity: 1;
+}
+
+/* Icon centered on top of the pill via z-index */
+.nav-item-icon {
+  font-size: 1.375rem !important;
+  line-height: inherit;
+  transition: all var(--transition-base);
+  position: relative;
+  z-index: 1;
+  display: block;
+  text-align: center;
+}
+
+.nav-item.active .nav-item-icon {
+  font-size: 1.5rem !important;
+}
+
+/* Label sits beneath the pill, always centered */
+.nav-item-label {
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Badge on the cart icon */
+.nav-item-badge {
+  position: absolute;
+  top: -4px;
+  right: 8px;
+  min-width: 1rem;
+  height: 1rem;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-size: 0.55rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 2px;
+  z-index: 2;
+}
