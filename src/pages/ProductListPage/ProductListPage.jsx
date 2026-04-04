@@ -1,9 +1,8 @@
 // src/pages/ProductListPage/ProductListPage.jsx
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import ProductCard from '../../components/ProductCard/ProductCard';
-import { categories } from '../../data/products';
-import { getAllProducts } from '../../services/productService';
+import { products, categories } from '../../data/products';
 import './ProductListPage.css';
 
 const categoryMeta = {
@@ -32,18 +31,6 @@ const ProductListPage = () => {
   const searchQuery = searchParams.get('search') || '';
   const [activeCategory, setActiveCategory] = useState(category);
   const [sortBy, setSortBy] = useState('featured');
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      setLoading(true);
-      const data = await getAllProducts();
-      setProducts(data);
-      setLoading(false);
-    };
-    fetchProducts();
-  }, []);
 
   const meta = categoryMeta[activeCategory] || categoryMeta.all;
 
@@ -65,7 +52,7 @@ const ProductListPage = () => {
     else if (sortBy === 'rating') list.sort((a, b) => b.rating - a.rating);
 
     return list;
-  }, [activeCategory, sortBy, searchQuery, products]);
+  }, [activeCategory, sortBy, searchQuery]);
 
   const handleCategoryChange = (catId) => {
     setActiveCategory(catId);
@@ -128,13 +115,7 @@ const ProductListPage = () => {
       </div>
 
       <main className="plp-content">
-        {loading ? (
-          <div className="plp-empty" style={{ padding: "4rem 2rem", textAlign: "center" }}>
-            <div className="skeleton" style={{ width: "40px", height: "40px", borderRadius: "50%", margin: "0 auto 1rem" }}></div>
-            <h2 className="plp-empty-title">Loading Collection...</h2>
-            <p>Fetching the latest products from the database</p>
-          </div>
-        ) : filteredProducts.length === 0 ? (
+        {filteredProducts.length === 0 ? (
           <div className="plp-empty">
             <div className="plp-empty-icon">✨</div>
             <h2 className="plp-empty-title">No items found</h2>
@@ -143,7 +124,7 @@ const ProductListPage = () => {
         ) : (
           <div className="products-grid">
             {filteredProducts.map(product => (
-              <ProductCard key={product.docId || product.id} product={product} />
+              <ProductCard key={product.id} product={product} />
             ))}
           </div>
         )}

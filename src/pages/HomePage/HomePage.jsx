@@ -1,27 +1,14 @@
 // src/pages/HomePage/HomePage.jsx
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import ProductImage from '../../components/ProductImage/ProductImage';
-import { categories } from '../../data/products';
-import { getAllProducts } from '../../services/productService';
+import { products, categories } from '../../data/products';
 import './HomePage.css';
 
 const HomePage = () => {
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState('all');
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      setLoading(true);
-      const data = await getAllProducts();
-      setProducts(data);
-      setLoading(false);
-    };
-    fetchProducts();
-  }, []);
 
   const giftProducts = products.filter(p => p.category === 'gifts');
 
@@ -29,17 +16,7 @@ const HomePage = () => {
     ? products
     : products.filter(p => p.category === activeCategory);
 
-  const featured = products.length >= 3 ? products.slice(0, 3) : products;
-
-  if (loading) {
-    return (
-      <main className="home-page" style={{ padding: "6rem 2rem", textAlign: "center" }}>
-        <div className="skeleton" style={{ width: "60px", height: "60px", borderRadius: "50%", margin: "0 auto 2rem" }}></div>
-        <h2>Loading Atelier Experience...</h2>
-        <p style={{ color: "var(--color-on-surface-variant)" }}>Curating the finest shawls and gifts from our database.</p>
-      </main>
-    );
-  }
+  const featured = products.slice(0, 3);
 
   return (
     <main className="home-page">

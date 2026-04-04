@@ -29,6 +29,7 @@
   aspect-ratio: 3/4;
   object-fit: cover;
   transition: transform var(--transition-smooth);
+  display: block;
 }
 
 .product-card:hover .product-card-img {

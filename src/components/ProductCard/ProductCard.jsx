@@ -60,10 +60,22 @@ const ProductCard = ({ product }) => {
       onKeyDown={(e) => e.key === 'Enter' && navigate(`/product/${product.id}`)}
     >
       <div className="product-card-img-container">
+        {product.image ? (
+          <img
+            src={product.image}
+            alt={product.name}
+            className="product-card-img"
+            style={{ aspectRatio: '3/4' }}
+            onError={(e) => {
+              e.target.style.display = 'none';
+              e.target.nextSibling && (e.target.nextSibling.style.display = 'flex');
+            }}
+          />
+        ) : null}
         <ProductImage
           product={product}
           className="product-card-img"
-          style={{ height: '100%', aspectRatio: '3/4' }}
+          style={{ height: '100%', aspectRatio: '3/4', display: product.image ? 'none' : 'flex' }}
         />
 
         <div className="product-card-img-overlay">
