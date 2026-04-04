@@ -2,7 +2,7 @@
 import { useState, useMemo } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import ProductCard from '../../components/ProductCard/ProductCard';
-import { products, categories } from '../../data/products';
+import { productData as products, categories } from '../../data/products';
 import './ProductListPage.css';
 
 const categoryMeta = {

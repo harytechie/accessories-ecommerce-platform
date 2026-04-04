@@ -335,7 +335,22 @@ const CheckoutPage = () => {
             {items.map(item => (
               <div key={item.cartId} className="checkout-order-item">
                 <div className="checkout-order-item-img">
-                  <ProductImage product={item} style={{ width: '100%', height: '100%' }} showEmoji={false} />
+                  {item.image ? (
+                    <img 
+                      src={item.image} 
+                      alt={item.name} 
+                      className="checkout-order-item-img-actual"
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                        e.target.nextSibling && (e.target.nextSibling.style.display = 'flex');
+                      }}
+                    />
+                  ) : null}
+                  <ProductImage 
+                    product={item} 
+                    style={{ width: '100%', height: '100%', display: item.image ? 'none' : 'flex' }} 
+                    showEmoji={false} 
+                  />
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <p className="checkout-order-item-name">{item.name}</p>

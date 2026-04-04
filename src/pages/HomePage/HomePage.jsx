@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import ProductImage from '../../components/ProductImage/ProductImage';
-import { products, categories } from '../../data/products';
+import { productData as products, categories } from '../../data/products';
 import './HomePage.css';
 
 const HomePage = () => {

@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useToast } from '../../context/ToastContext';
-import { getProductById, getProductsByCategory } from '../../services/productService';
+import { getProductById, getProductsByCategory } from '../../data/products';
 import ProductImage from '../../components/ProductImage/ProductImage';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import './ProductDetailPage.css';
@@ -17,34 +17,22 @@ const ProductDetailPage = () => {
   const { addToast } = useToast();
 
   const [product, setProduct] = useState(null);
-  const [related, setRelated] = useState([]);
-  const [loading, setLoading] = useState(true);
-
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [addingToCart, setAddingToCart] = useState(false);
 
   useEffect(() => {
-    const fetchProductData = async () => {
-      setLoading(true);
-      const fetchedProduct = await getProductById(id);
+    const fetchedProduct = getProductById(id);
 
-      if (fetchedProduct) {
-        setProduct(fetchedProduct);
-        if (fetchedProduct.sizes?.length > 0) setSelectedSize(fetchedProduct.sizes[0]);
-        if (fetchedProduct.colors?.length > 0) setSelectedColor(fetchedProduct.colors[0]);
-
-        const relatedData = await getProductsByCategory(fetchedProduct.category);
-        setRelated(relatedData.filter(p => p.docId !== fetchedProduct.docId && p.id !== fetchedProduct.id).slice(0, 4));
-      }
-      setLoading(false);
-    };
-
-    fetchProductData();
+    if (fetchedProduct) {
+      setProduct(fetchedProduct);
+      if (fetchedProduct.sizes?.length > 0) setSelectedSize(fetchedProduct.sizes[0]);
+      if (fetchedProduct.colors?.length > 0) setSelectedColor(fetchedProduct.colors[0]);
+    }
   }, [id]);
 
-  if (loading) {
+  if (!product) {
     return (
       <div className="pdp-not-found page-wrapper" style={{ padding: "6rem 2rem", textAlign: "center" }}>
         <div className="skeleton" style={{ width: "60px", height: "60px", borderRadius: "50%", margin: "0 auto 2rem" }}></div>
@@ -87,11 +75,20 @@ const ProductDetailPage = () => {
       <div className="pdp-layout" style={{ padding: '0 var(--space-5)' }}>
         {/* Hero Image */}
         <div className="pdp-hero">
-          <ProductImage
-            product={product}
-            className="pdp-hero-img"
-            style={{ width: '100%', aspectRatio: '4/3', borderRadius: 'var(--radius-xl)', minHeight: '300px' }}
-          />
+          {product.image ? (
+            <img
+              src={product.image}
+              alt={product.name}
+              className="pdp-hero-img"
+              style={{ width: '100%', aspectRatio: '4/3', borderRadius: 'var(--radius-xl)', minHeight: '300px', objectFit: 'cover' }}
+            />
+          ) : (
+            <ProductImage
+              product={product}
+              className="pdp-hero-img"
+              style={{ width: '100%', aspectRatio: '4/3', borderRadius: 'var(--radius-xl)', minHeight: '300px' }}
+            />
+          )}
           {product.badge && (
             <span className={`pdp-hero-badge product-card-badge ${badgeClass[product.badge]}`}>
               {product.badge}
@@ -188,20 +185,7 @@ const ProductDetailPage = () => {
         </div>
       </div>
 
-      {/* Related products */}
-      {related.length > 0 && (
-        <section style={{ padding: '0 var(--space-5) var(--space-8)' }}>
-          <div className="section-header">
-            <h2 className="section-title">
-              <span>You might also adore</span>
-              Related Pieces
-            </h2>
-          </div>
-          <div className="products-grid">
-            {related.map(rp => <ProductCard key={rp.docId || rp.id} product={rp} />)}
-          </div>
-        </section>
-      )}
+      {/* Related products section removed as per user request */}
 
       {/* Sticky add-to-cart bar */}
       <div className="pdp-sticky-bar">

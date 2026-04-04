@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useToast } from '../../context/ToastContext';
 import ProductImage from '../../components/ProductImage/ProductImage';
-import { products } from '../../data/products';
+import { productData as products } from '../../data/products';
 import './CartPage.css';
 
 const CartItem = ({ item }) => {
@@ -19,9 +19,20 @@ const CartItem = ({ item }) => {
   return (
     <div className="cart-item">
       <div className="cart-item-img">
+        {item.image ? (
+          <img 
+            src={item.image} 
+            alt={item.name} 
+            className="cart-item-img-actual"
+            onError={(e) => {
+              e.target.style.display = 'none';
+              e.target.nextSibling && (e.target.nextSibling.style.display = 'flex');
+            }}
+          />
+        ) : null}
         <ProductImage
           product={item}
-          style={{ width: '100%', height: '100%', borderRadius: 'var(--radius-md)' }}
+          style={{ width: '100%', height: '100%', borderRadius: 'var(--radius-md)', display: item.image ? 'none' : 'flex' }}
           showEmoji={false}
         />
       </div>
@@ -71,10 +82,6 @@ const CartPage = () => {
   const { items, subtotal, shipping, tax, total } = useCart();
   const { addToast } = useToast();
   const [promoCode, setPromoCode] = useState('');
-
-  const recommendations = products
-    .filter(p => !items.some(i => i.id === p.id))
-    .slice(0, 4);
 
   const handleApplyPromo = () => {
     if (promoCode.toUpperCase() === 'ATELIER10') {
@@ -157,30 +164,6 @@ const CartPage = () => {
               </button>
             </div>
           </div>
-
-          {/* Recommendations */}
-          {recommendations.length > 0 && (
-            <div className="cart-recommendations">
-              <h3 className="cart-rec-title">You might also adore</h3>
-              <div className="cart-rec-scroll">
-                {recommendations.map(rec => (
-                  <div
-                    key={rec.id}
-                    className="cart-rec-card"
-                    onClick={() => navigate(`/product/${rec.id}`)}
-                    role="button"
-                    tabIndex={0}
-                  >
-                    <ProductImage product={rec} className="cart-rec-img" style={{ height: '120px' }} showEmoji={false} />
-                    <div className="cart-rec-body">
-                      <p className="cart-rec-name">{rec.name}</p>
-                      <p className="cart-rec-price">${rec.price}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
 
         {/* Summary */}

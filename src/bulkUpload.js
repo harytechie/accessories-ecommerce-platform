@@ -1,7 +1,7 @@
 // src/bulkUpload.js
 import { db } from './firebase';
 import { collection, addDoc } from 'firebase/firestore';
-import { products } from './data/products';
+import { productData as products } from './data/products';
 
 export const uploadAllProducts = async () => {
   console.log("Starting bulk upload of " + products.length + " products...");
