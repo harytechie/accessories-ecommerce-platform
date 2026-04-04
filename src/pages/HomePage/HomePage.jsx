@@ -1,20 +1,45 @@
 // src/pages/HomePage/HomePage.jsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import ProductImage from '../../components/ProductImage/ProductImage';
-import { products, categories } from '../../data/products';
+import { categories } from '../../data/products';
+import { getAllProducts } from '../../services/productService';
 import './HomePage.css';
 
 const HomePage = () => {
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState('all');
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true);
+      const data = await getAllProducts();
+      setProducts(data);
+      setLoading(false);
+    };
+    fetchProducts();
+  }, []);
+
+  const giftProducts = products.filter(p => p.category === 'gifts');
 
   const filtered = activeCategory === 'all'
     ? products
     : products.filter(p => p.category === activeCategory);
 
-  const featured = products.slice(0, 3);
+  const featured = products.length >= 3 ? products.slice(0, 3) : products;
+
+  if (loading) {
+    return (
+      <main className="home-page" style={{ padding: "6rem 2rem", textAlign: "center" }}>
+        <div className="skeleton" style={{ width: "60px", height: "60px", borderRadius: "50%", margin: "0 auto 2rem" }}></div>
+        <h2>Loading Atelier Experience...</h2>
+        <p style={{ color: "var(--color-on-surface-variant)" }}>Curating the finest shawls and gifts from our database.</p>
+      </main>
+    );
+  }
 
   return (
     <main className="home-page">
@@ -51,44 +76,44 @@ const HomePage = () => {
           </div>
 
           {/* Hero Visual */}
-          <div className="hero-visual">
-            <div className="hero-card-grid">
-              {/* Tall card */}
-              <div
-                className="hero-featured-card hero-card-tall"
-                onClick={() => navigate(`/product/${featured[0].id}`)}
-                role="button"
-                tabIndex={0}
-              >
-                <ProductImage
-                  product={featured[0]}
-                  className="hero-card-img"
-                  style={{ minHeight: '320px', borderRadius: 'var(--radius-xl)' }}
-                />
+          {featured.length > 0 && (
+            <div className="hero-visual">
+              <div className="hero-card-grid">
+                {/* Tall card */}
+                <div
+                  className="hero-featured-card hero-card-tall"
+                  onClick={() => navigate(`/product/${featured[0].id}`)}
+                  role="button"
+                  tabIndex={0}
+                >
+                  <ProductImage
+                    product={featured[0]}
+                    className="hero-card-img"
+                    style={{ minHeight: '320px', borderRadius: 'var(--radius-xl)' }}
+                  />
+                </div>
 
-              </div>
-
-              {/* Two stacked cards */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
-                {featured.slice(1, 3).map(product => (
-                  <div
-                    key={product.id}
-                    className="hero-featured-card"
-                    onClick={() => navigate(`/product/${product.id}`)}
-                    role="button"
-                    tabIndex={0}
-                  >
-                    <ProductImage
-                      product={product}
-                      className="hero-card-img"
-                      style={{ minHeight: '148px', borderRadius: 'var(--radius-lg)' }}
-                    />
-
-                  </div>
-                ))}
+                {/* Two stacked cards */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
+                  {featured.slice(1, 3).map(product => (
+                    <div
+                      key={product.docId || product.id}
+                      className="hero-featured-card"
+                      onClick={() => navigate(`/product/${product.id}`)}
+                      role="button"
+                      tabIndex={0}
+                    >
+                      <ProductImage
+                        product={product}
+                        className="hero-card-img"
+                        style={{ minHeight: '148px', borderRadius: 'var(--radius-lg)' }}
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </section>
 
@@ -138,10 +163,58 @@ const HomePage = () => {
 
         <div className="products-grid">
           {filtered.slice(0, 4).map(product => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard key={product.docId || product.id} product={product} />
           ))}
         </div>
       </section>
+
+      {/* ── Gift Section ─── */}
+      {giftProducts.length > 0 && (
+        <section className="gift-section" aria-label="Gift Collection">
+          <div className="gift-section-header">
+            <div className="gift-section-badge">
+              <span className="material-icons">card_giftcard</span>
+              Gift Collection
+            </div>
+            <h2 className="gift-section-title">
+              Perfect Gifts for <em>Every Occasion</em>
+            </h2>
+            <p className="gift-section-subtitle">
+              Discover our curated selection of unique gift sets, hampers, and luxurious gift boxes.
+              From romantic surprises to celebration essentials, find the perfect way to show you care.
+            </p>
+          </div>
+
+          <div className="gift-showcase">
+            {giftProducts.slice(0, 6).map(product => (
+              <div key={product.docId || product.id} className="gift-showcase-item">
+                <ProductCard product={product} />
+              </div>
+            ))}
+          </div>
+
+          <div className="gift-scroll-container">
+            <div className="gift-scroll-track">
+              {giftProducts.slice(6).map(product => (
+                <div key={product.docId || product.id} className="gift-scroll-item">
+                  <ProductCard product={product} />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="gift-section-footer">
+            <button
+              id="view-all-gifts-btn"
+              className="btn btn-primary btn-lg"
+              onClick={() => navigate('/products/gifts')}
+            >
+              <span className="material-icons" style={{ fontSize: '1.125rem' }}>redeem</span>
+              View All Gifts
+            </button>
+          </div>
+        </section>
+      )}
 
       {/* ── About Banner ─── */}
       <section className="about-banner" aria-label="About Atelier">
@@ -155,6 +228,7 @@ const HomePage = () => {
           id="about-learn-more-btn"
           className="btn btn-secondary"
           style={{ marginTop: 'var(--space-6)' }}
+          onClick={() => navigate('/about')}
         >
           Our Story
         </button>
