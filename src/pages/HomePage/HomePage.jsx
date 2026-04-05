@@ -59,34 +59,55 @@ const HomePage = () => {
                 {/* Tall card */}
                 <div
                   className="hero-featured-card hero-card-tall"
-                  onClick={() => navigate(`/product/${featured[0].id}`)}
+                  onClick={() => navigate('/products/shawls')}
                   role="button"
                   tabIndex={0}
                 >
-                  <ProductImage
-                    product={featured[0]}
+                  <img
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJUnELaEFr5gMZXTZAvHdDH9fDxh6c_9t6_UZpnkm2CsfA55vjRj5BCTmB-1pcgxdjQAUDGjTao3EGTGfXmB0A4wQ1EgEtoRcfzRBE4W_Ya-IHM_L7mj1r8cgw4QKrEII6prbZs2s5aNsKjF_iUxXSG3P2YSC95rlpfcsaCYl75TR-tgfHVP2bEhOhlLatbBGUuABW7HDpl6R9UVgWKYRZWENZWSErCEWncDhhbkYP5IFfaR2bL6XYmeFoyfn88Vo1Z5Qk8IFkz00"
+                    alt="Shawls Collection"
                     className="hero-card-img"
-                    style={{ minHeight: '320px', borderRadius: 'var(--radius-xl)' }}
+                    style={{ height: '100%', width: '100%', objectFit: 'cover', borderRadius: 'var(--radius-xl)' }}
                   />
+                  <div className="hero-card-overlay">
+                    <span className="hero-card-overlay-name">Rose Silk Burga Shawl</span>
+                  </div>
                 </div>
 
                 {/* Two stacked cards */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
-                  {featured.slice(1, 3).map(product => (
-                    <div
-                      key={product.docId || product.id}
-                      className="hero-featured-card"
-                      onClick={() => navigate(`/product/${product.id}`)}
-                      role="button"
-                      tabIndex={0}
-                    >
-                      <ProductImage
-                        product={product}
-                        className="hero-card-img"
-                        style={{ minHeight: '148px', borderRadius: 'var(--radius-lg)' }}
-                      />
+                  <div
+                    className="hero-featured-card"
+                    onClick={() => navigate('/products/gifts')}
+                    role="button"
+                    tabIndex={0}
+                  >
+                    <img
+                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgqrxCeCx1MPCPbwY2hQ6LCn20XsDWxmjo-J3dNwRR_svmzSHTR1YJM6tTp5ZWNh451O2tT-m4MUWCa52iY9oZHSWKRixq--qkIZnb_Rs_p1Q0FVocOiKqaoGp1FqmovA8WrHExS5VTPk87PuFXC4gbaCQ8-npyIikRFfaiV_x4yFbR4iYeQxhToMoF1SjtUafQ_s1TjPY_bLDIk-P1X5TRtZU--xxxPfMQbdLG6LniDeA8tjSVLuSwZgvwe9Pqu_gQmuOIBaDKx0"
+                      alt="Gift Frames"
+                      className="hero-card-img"
+                      style={{ height: '148px', width: '100%', objectFit: 'cover', borderRadius: 'var(--radius-lg)' }}
+                    />
+                    <div className="hero-card-overlay" style={{ padding: 'var(--space-2)' }}>
+                      <span className="hero-card-overlay-name" style={{ fontSize: '0.75rem' }}>Love Gift Frame</span>
                     </div>
-                  ))}
+                  </div>
+                  <div
+                    className="hero-featured-card"
+                    onClick={() => navigate('/products/accessories')}
+                    role="button"
+                    tabIndex={0}
+                  >
+                    <img
+                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuChat-yh1QA9fgsAi6E0gpw2T9pyEMsaz3r8_OFTEpyrOeFBJKpmcm494jTlr0niss55NUaP05nGoYMcvLQuoBVq9Hva4U_HVxd3F3UFpXAe_Go1yx6DzFiB8Poh0KKk7qKJ-jJHO1sGqQmzeM71QbqLHuOIuJC2DBhjWsSncVhi0V5vTGrS3CWlyHsHPVQiQv6d24BUkgtaAXJkzMtt_f5qsyCb62c8sCdHPpVUB1yNnBYTMmBqp6gH3oV56P2Gb_59eCVw9oCmlI"
+                      alt="Accessories"
+                      className="hero-card-img"
+                      style={{ height: '148px', width: '100%', objectFit: 'cover', borderRadius: 'var(--radius-lg)' }}
+                    />
+                    <div className="hero-card-overlay" style={{ padding: 'var(--space-2)' }}>
+                      <span className="hero-card-overlay-name" style={{ fontSize: '0.75rem' }}>Thread Bangles Set</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
