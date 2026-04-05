@@ -17,6 +17,7 @@ const ProductDetailPage = () => {
   const { addToast } = useToast();
 
   const [product, setProduct] = useState(null);
+  const [suggestedProducts, setSuggestedProducts] = useState([]);
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
   const [quantity, setQuantity] = useState(1);
@@ -29,6 +30,11 @@ const ProductDetailPage = () => {
       setProduct(fetchedProduct);
       if (fetchedProduct.sizes?.length > 0) setSelectedSize(fetchedProduct.sizes[0]);
       if (fetchedProduct.colors?.length > 0) setSelectedColor(fetchedProduct.colors[0]);
+
+      const categoryProducts = getProductsByCategory(fetchedProduct.category);
+      const filtered = categoryProducts.filter(p => p.id !== fetchedProduct.id);
+      const shuffled = filtered.sort(() => Math.random() - 0.5).slice(0, 4);
+      setSuggestedProducts(shuffled);
     }
   }, [id]);
 
@@ -185,7 +191,21 @@ const ProductDetailPage = () => {
         </div>
       </div>
 
-      {/* Related products section removed as per user request */}
+      {suggestedProducts.length > 0 && (
+        <section className="pdp-suggested">
+          <div className="section-header">
+            <h2 className="section-title">
+              <span>You might also like</span>
+              More from {product.category}
+            </h2>
+          </div>
+          <div className="products-grid">
+            {suggestedProducts.map(p => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Sticky add-to-cart bar */}
       <div className="pdp-sticky-bar">

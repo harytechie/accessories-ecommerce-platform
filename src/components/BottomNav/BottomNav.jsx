@@ -7,7 +7,7 @@ const navItems = [
   { id: 'home', label: 'Home', icon: 'home', path: '/' },
   { id: 'shawls', label: 'Shawls', icon: 'checkroom', path: '/products/shawls' },
   { id: 'gifts', label: 'Gifts', icon: 'card_giftcard', path: '/products/gifts' },
-  { id: 'profile', label: 'Profile', icon: 'person', path: '/profile' },
+  { id: 'accessories', label: 'Accessories', icon: 'diamond', path: '/products/accessories' },
 ];
 
 const BottomNav = () => {

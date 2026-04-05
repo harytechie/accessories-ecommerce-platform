@@ -65,6 +65,15 @@ const Header = () => {
               <span className="header-cart-badge">{totalItems}</span>
             )}
           </button>
+
+          <button
+            id="header-profile-btn"
+            className="header-profile-btn"
+            aria-label="Profile"
+            onClick={() => navigate('/profile')}
+          >
+            <span className="material-icons" style={{ fontSize: '1.375rem' }}>person</span>
+          </button>
         </div>
       </div>
     </header>

@@ -269,6 +269,22 @@
   padding: var(--space-16) var(--space-4);
 }
 
+.pdp-suggested {
+  padding: 0 var(--space-5) var(--space-8);
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.pdp-suggested .section-header {
+  margin-bottom: var(--space-5);
+}
+
+.pdp-suggested .products-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+}
+
 @media (min-width: 768px) {
   .pdp-layout {
     display: grid;

@@ -1,5 +1,5 @@
 // src/pages/ProductListPage/ProductListPage.jsx
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import { productData as products, categories } from '../../data/products';
@@ -31,6 +31,10 @@ const ProductListPage = () => {
   const searchQuery = searchParams.get('search') || '';
   const [activeCategory, setActiveCategory] = useState(category);
   const [sortBy, setSortBy] = useState('featured');
+
+  useEffect(() => {
+    setActiveCategory(category);
+  }, [category]);
 
   const meta = categoryMeta[activeCategory] || categoryMeta.all;
 
