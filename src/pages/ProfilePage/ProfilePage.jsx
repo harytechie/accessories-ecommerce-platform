@@ -1,5 +1,6 @@
 // src/pages/ProfilePage/ProfilePage.jsx
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 import './ProfilePage.css';
 
 const menuItems = [
@@ -13,26 +14,31 @@ const menuItems = [
 
 const ProfilePage = () => {
   const navigate = useNavigate();
+  const { user, isLoggedIn, logout } = useAuth();
 
   return (
     <div className="profile-page">
       {/* Header */}
       <div className="profile-header">
         <div className="profile-avatar">
-          <span className="material-icons" style={{ fontSize: '2rem', color: 'var(--color-primary)' }}>person</span>
+          {isLoggedIn && user?.avatar ? (
+            <img src={user.avatar} alt={user.name} className="profile-avatar-img" />
+          ) : (
+            <span className="material-icons" style={{ fontSize: '2rem', color: 'var(--color-primary)' }}>person</span>
+          )}
         </div>
         <div className="profile-info">
-          <h1 className="profile-name">Welcome, Guest</h1>
-          <p className="profile-email">Sign in to access your account</p>
+          <h1 className="profile-name">{isLoggedIn ? `Welcome, ${user?.name || 'User'}` : 'Welcome, Guest'}</h1>
+          <p className="profile-email">{isLoggedIn ? user?.email : 'Sign in to access your account'}</p>
         </div>
       </div>
 
       {/* Stats */}
       <div className="profile-stats">
         {[
-          { label: 'Orders', value: '0' },
-          { label: 'Wishlist', value: '0' },
-          { label: 'Reviews', value: '0' },
+          { label: 'Orders', value: isLoggedIn ? '2' : '0' },
+          { label: 'Wishlist', value: isLoggedIn ? '5' : '0' },
+          { label: 'Reviews', value: isLoggedIn ? '1' : '0' },
         ].map(stat => (
           <div key={stat.label} className="profile-stat">
             <span className="profile-stat-value">{stat.value}</span>
@@ -41,12 +47,27 @@ const ProfilePage = () => {
         ))}
       </div>
 
-      {/* Sign in CTA */}
+      {/* Sign in CTA / Logout */}
       <div className="profile-cta">
-        <button id="profile-signin-btn" className="btn btn-primary btn-full btn-lg">
-          <span className="material-icons" style={{ fontSize: '1.1rem' }}>login</span>
-          Sign In / Create Account
-        </button>
+        {isLoggedIn ? (
+          <button 
+            id="profile-logout-btn" 
+            className="btn btn-secondary btn-full btn-lg"
+            onClick={() => logout()}
+          >
+            <span className="material-icons" style={{ fontSize: '1.1rem' }}>logout</span>
+            Sign Out
+          </button>
+        ) : (
+          <button 
+            id="profile-signin-btn" 
+            className="btn btn-primary btn-full btn-lg"
+            onClick={() => navigate('/login')}
+          >
+            <span className="material-icons" style={{ fontSize: '1.1rem' }}>login</span>
+            Sign In / Create Account
+          </button>
+        )}
       </div>
 
       {/* Menu */}

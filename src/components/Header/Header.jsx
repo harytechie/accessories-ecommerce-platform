@@ -2,11 +2,13 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
+import { useAuth } from '../../context/AuthContext';
 import './Header.css';
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const { totalItems } = useCart();
+  const { isLoggedIn, user } = useAuth();
   const navigate = useNavigate();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -68,11 +70,17 @@ const Header = () => {
 
           <button
             id="header-profile-btn"
-            className="header-profile-btn"
+            className={`header-profile-btn ${isLoggedIn ? 'active' : ''}`}
             aria-label="Profile"
             onClick={() => navigate('/profile')}
           >
-            <span className="material-icons" style={{ fontSize: '1.375rem' }}>person</span>
+            {isLoggedIn && user?.avatar ? (
+              <img src={user.avatar} alt="Profile" className="header-profile-avatar" />
+            ) : (
+              <span className="material-icons" style={{ fontSize: '1.375rem', color: isLoggedIn ? 'var(--color-primary)' : 'inherit' }}>
+                {isLoggedIn ? 'account_circle' : 'person'}
+              </span>
+            )}
           </button>
         </div>
       </div>

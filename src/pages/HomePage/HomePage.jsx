@@ -219,7 +219,7 @@ const HomePage = () => {
         <p className="about-banner-eyebrow">The Weaver's Promise</p>
         <h2 className="about-banner-title">Every piece tells a story of generations</h2>
         <p className="about-banner-text">
-          Every shawl and gift at Atelier is sourced from artisans who have spent
+          Every shawl and gift at Atelier is sourced from artisans who have spent 
           generations perfecting their craft. We believe in slow fashion and intentional gifting.
         </p>
         <button

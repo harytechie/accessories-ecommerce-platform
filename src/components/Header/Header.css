@@ -156,6 +156,7 @@
 .header-search-container.open .header-search-btn {
   background: transparent;
 }
+
 .header-search-container.open .header-search-btn:hover {
   transform: scale(1.05);
 }

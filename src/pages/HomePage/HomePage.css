@@ -5,7 +5,7 @@
 
 /* ── Hero Section ─────────────────────────── */
 .hero {
-  padding: calc(var(--nav-height) + var(--space-8)) var(--space-5) var(--space-8);
+  padding: calc(var(--nav-height) + var(--space-1)) var(--space-5) var(--space-8);
   background: var(--color-background);
   position: relative;
   overflow: hidden;
@@ -36,7 +36,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-2);
 }
 
 .hero-eyebrow::before {
@@ -235,10 +235,11 @@
 
 /* ── Featured Products Section ─────────────────────────── */
 .featured-section {
-  padding: 0 var(--space-5) var(--space-8);
+  padding: 0 0 var(--space-8);
 }
 
 .section-header {
+  padding: 0 var(--space-4);
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -269,10 +270,20 @@
 .about-banner {
   background: var(--color-surface-container-low);
   border-radius: var(--radius-xl);
-  margin: 0 var(--space-5) var(--space-8);
+  margin: 0 var(--space-4) var(--space-8);
   padding: var(--space-8) var(--space-6);
   position: relative;
   overflow: hidden;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+.about-banner button:hover {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  transform: scale(1.05);
+  box-shadow: 0 8px 24px rgba(136, 79, 80, 0.2);
 }
 
 .about-banner::before {
@@ -313,7 +324,7 @@
 
 @media (min-width: 768px) {
   .hero {
-    padding: calc(var(--nav-height) + var(--space-12)) var(--space-12) var(--space-12);
+    padding: calc(var(--nav-height) + var(--space-8)) var(--space-12) var(--space-12);
   }
 
   .hero-inner {
@@ -334,10 +345,10 @@
 
 /* ── Gift Section ─────────────────────────── */
 .gift-section {
-  padding: var(--space-8) var(--space-5);
+  padding: var(--space-8) var(--space-4);
   background: var(--color-surface-container-low);
   border-radius: var(--radius-xl);
-  margin: 0 var(--space-5) var(--space-8);
+  margin: 0 var(--space-4) var(--space-8);
   position: relative;
   overflow: hidden;
 }
@@ -433,8 +444,8 @@
 .gift-scroll-container {
   overflow-x: auto;
   scrollbar-width: none;
-  margin: 0 calc(var(--space-5) * -1);
-  padding: 0 var(--space-5);
+  margin: 0 calc(var(--space-4) * -1);
+  padding: 0 var(--space-4);
 }
 
 .gift-scroll-container::-webkit-scrollbar {
@@ -467,7 +478,11 @@
 }
 
 @media (min-width: 1024px) {
-  .featured-section, .category-section, .about-banner, .gift-section {
+
+  .featured-section,
+  .category-section,
+  .about-banner,
+  .gift-section {
     max-width: 1200px;
     margin-left: auto;
     margin-right: auto;

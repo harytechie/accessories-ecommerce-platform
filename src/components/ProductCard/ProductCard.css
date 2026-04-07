@@ -198,12 +198,14 @@
 .products-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-4);
+  gap: var(--space-3);
+  padding: 0 var(--space-4);
 }
 
 @media (min-width: 640px) {
   .products-grid {
     grid-template-columns: repeat(3, 1fr);
+    padding: 0;
   }
 }
 
@@ -211,5 +213,6 @@
   .products-grid {
     grid-template-columns: repeat(4, 1fr);
     gap: var(--space-6);
+    padding: 0;
   }
 }
