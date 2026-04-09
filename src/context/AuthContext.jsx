@@ -1,5 +1,15 @@
 // src/context/AuthContext.jsx
 import { createContext, useContext, useState, useEffect } from 'react';
+import {
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut,
+  updateProfile,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from 'firebase/auth';
+import { auth } from '../firebase';
 
 const AuthContext = createContext();
 
@@ -9,38 +19,55 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Listen to Firebase auth state changes
   useEffect(() => {
-    // Check if user is logged in (e.g., from localStorage)
-    const storedUser = localStorage.getItem('atelier_user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-    setLoading(false);
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      if (firebaseUser) {
+        setUser({
+          uid: firebaseUser.uid,
+          email: firebaseUser.email,
+          name: firebaseUser.displayName || firebaseUser.email.split('@')[0],
+          avatar: firebaseUser.photoURL || null,
+        });
+      } else {
+        setUser(null);
+      }
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
   }, []);
 
-  const login = (email, password) => {
-    // Simulate login for now
-    const newUser = { email, name: email.split('@')[0], avatar: null };
-    setUser(newUser);
-    localStorage.setItem('atelier_user', JSON.stringify(newUser));
-    return true;
+  // Login with email & password
+  const login = async (email, password) => {
+    const result = await signInWithEmailAndPassword(auth, email, password);
+    return result.user;
   };
 
-  const signup = (userData) => {
-    // Simulate signup
-    const newUser = { ...userData, avatar: null };
-    setUser(newUser);
-    localStorage.setItem('atelier_user', JSON.stringify(newUser));
-    return true;
+  // Signup with email, password, and optional display name
+  const signup = async (userData) => {
+    const { email, password, name } = userData;
+    const result = await createUserWithEmailAndPassword(auth, email, password);
+    if (name) {
+      await updateProfile(result.user, { displayName: name });
+    }
+    return result.user;
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('atelier_user');
+  // Login with Google popup
+  const loginWithGoogle = async () => {
+    const provider = new GoogleAuthProvider();
+    const result = await signInWithPopup(auth, provider);
+    return result.user;
+  };
+
+  // Logout
+  const logout = async () => {
+    await signOut(auth);
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, signup, logout, isLoggedIn: !!user }}>
+    <AuthContext.Provider value={{ user, loading, login, signup, loginWithGoogle, logout, isLoggedIn: !!user }}>
       {children}
     </AuthContext.Provider>
   );

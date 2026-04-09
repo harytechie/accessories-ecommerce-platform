@@ -1,7 +1,8 @@
 // src/components/ProductCard/ProductCard.jsx
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
+import { useWishlist } from '../../context/WishlistContext';
+import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
 import ProductImage from '../ProductImage/ProductImage';
 import './ProductCard.css';
@@ -33,20 +34,28 @@ const ProductCard = ({ product }) => {
   const navigate = useNavigate();
   const { addItem } = useCart();
   const { addToast } = useToast();
-  const [wishlisted, setWishlisted] = useState(false);
+  const { isWishlisted, toggleWishlist } = useWishlist();
+  const { isLoggedIn } = useAuth();
+
+  const wishlisted = isWishlisted(product.id);
 
   const handleQuickAdd = (e) => {
     e.stopPropagation();
-    addItem(product, 1, product.sizes[0], product.colors[0]);
+    addItem(product, 1, product.sizes?.[0], product.colors?.[0]);
     addToast(`${product.name} added to cart`, 'shopping_bag');
   };
 
-  const handleWishlist = (e) => {
+  const handleWishlist = async (e) => {
     e.stopPropagation();
-    setWishlisted(prev => !prev);
+    if (!isLoggedIn) {
+      addToast('Please sign in to use wishlist', 'favorite_border');
+      navigate('/login');
+      return;
+    }
+    const added = await toggleWishlist(product);
     addToast(
-      wishlisted ? 'Removed from wishlist' : 'Added to wishlist',
-      wishlisted ? 'favorite_border' : 'favorite'
+      added ? 'Added to wishlist ❤️' : 'Removed from wishlist',
+      added ? 'favorite' : 'favorite_border'
     );
   };
 

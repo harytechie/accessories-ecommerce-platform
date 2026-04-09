@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useToast } from '../../context/ToastContext';
+import { useAuth } from '../../context/AuthContext';
+import { placeOrderFS } from '../../services/firestoreService';
 import ProductImage from '../../components/ProductImage/ProductImage';
 import './CheckoutPage.css';
 
@@ -16,9 +18,11 @@ const CheckoutPage = () => {
   const navigate = useNavigate();
   const { items, subtotal, shipping, tax, total, clearCart } = useCart();
   const { addToast } = useToast();
+  const { user } = useAuth();
 
   const [currentStep, setCurrentStep] = useState(0);
   const [orderPlaced, setOrderPlaced] = useState(false);
+  const [orderId, setOrderId] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState('card');
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -50,11 +54,39 @@ const CheckoutPage = () => {
 
   const handlePlaceOrder = async () => {
     setIsProcessing(true);
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    setIsProcessing(false);
-    setOrderPlaced(true);
-    clearCart();
+    try {
+      const address = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        street: formData.address,
+        city: formData.city,
+        state: formData.state,
+        zipCode: formData.zipCode,
+        country: formData.country,
+        email: formData.email,
+        phone: formData.phone,
+      };
+
+      const newOrderId = await placeOrderFS(user.uid, {
+        items,
+        subtotal,
+        shipping,
+        tax,
+        total,
+        address,
+        paymentMethod,
+      });
+
+      setOrderId(newOrderId);
+      clearCart();
+      setOrderPlaced(true);
+      addToast('Order placed successfully! 🎉', 'check_circle');
+    } catch (err) {
+      console.error('Order placement failed:', err);
+      addToast('Failed to place order. Please try again.', 'error');
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   if (items.length === 0 && !orderPlaced) {
@@ -72,7 +104,7 @@ const CheckoutPage = () => {
   }
 
   if (orderPlaced) {
-    const orderNum = `ATL-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+    const shortId = orderId ? orderId.substring(0, 8).toUpperCase() : 'XXXXXXXX';
     return (
       <div className="checkout-page">
         <div className="checkout-success animate-fade-in-up">
@@ -85,16 +117,26 @@ const CheckoutPage = () => {
           </p>
           <div className="checkout-order-number">
             <p>Order Reference</p>
-            <strong>{orderNum}</strong>
+            <strong>ATL-{shortId}</strong>
           </div>
-          <button
-            id="order-success-home-btn"
-            className="btn btn-primary btn-lg btn-full"
-            onClick={() => navigate('/')}
-          >
-            <span className="material-icons" style={{ fontSize: '1.1rem' }}>home</span>
-            Continue Shopping
-          </button>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)', width: '100%' }}>
+            <button
+              id="order-success-orders-btn"
+              className="btn btn-primary btn-lg btn-full"
+              onClick={() => navigate('/orders')}
+            >
+              <span className="material-icons" style={{ fontSize: '1.1rem' }}>receipt_long</span>
+              View My Orders
+            </button>
+            <button
+              id="order-success-home-btn"
+              className="btn btn-secondary btn-lg btn-full"
+              onClick={() => navigate('/')}
+            >
+              <span className="material-icons" style={{ fontSize: '1.1rem' }}>home</span>
+              Continue Shopping
+            </button>
+          </div>
         </div>
       </div>
     );

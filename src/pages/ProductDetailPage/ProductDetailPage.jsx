@@ -109,7 +109,7 @@ const ProductDetailPage = () => {
           {/* Rating */}
           <div className="pdp-rating-row">
             <div className="pdp-rating">
-              {[1,2,3,4,5].map(s => (
+              {[1, 2, 3, 4, 5].map(s => (
                 <span key={s} className="material-icons">
                   {s <= Math.round(product.rating) ? 'star' : 'star_border'}
                 </span>

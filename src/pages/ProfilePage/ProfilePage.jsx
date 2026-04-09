@@ -1,20 +1,45 @@
 // src/pages/ProfilePage/ProfilePage.jsx
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useWishlist } from '../../context/WishlistContext';
+import { useCart } from '../../context/CartContext';
+import { getOrdersFS } from '../../services/firestoreService';
 import './ProfilePage.css';
-
-const menuItems = [
-  { icon: 'local_shipping', label: 'My Orders', subtitle: 'Track and review past orders' },
-  { icon: 'favorite_border', label: 'Wishlist', subtitle: 'Your saved pieces' },
-  { icon: 'location_on', label: 'Addresses', subtitle: 'Manage delivery addresses' },
-  { icon: 'credit_card', label: 'Payment Methods', subtitle: 'Cards and payment options' },
-  { icon: 'notifications_none', label: 'Notifications', subtitle: 'Order updates and promotions' },
-  { icon: 'help_outline', label: 'Help & Support', subtitle: 'FAQ, returns, and contact' },
-];
 
 const ProfilePage = () => {
   const navigate = useNavigate();
   const { user, isLoggedIn, logout } = useAuth();
+  const { wishlistCount } = useWishlist();
+  const { totalItems } = useCart();
+  const [orderCount, setOrderCount] = useState(0);
+
+  // Fetch order count from Firestore
+  useEffect(() => {
+    if (!isLoggedIn || !user?.uid) {
+      setOrderCount(0);
+      return;
+    }
+    getOrdersFS(user.uid)
+      .then((orders) => setOrderCount(orders.length))
+      .catch((err) => console.error('Failed to fetch order count:', err));
+  }, [user?.uid, isLoggedIn]);
+
+  const stats = [
+    { label: 'Orders', value: isLoggedIn ? String(orderCount) : '0', path: '/orders' },
+    { label: 'Wishlist', value: isLoggedIn ? String(wishlistCount) : '0', path: '/wishlist' },
+    { label: 'Cart', value: isLoggedIn ? String(totalItems) : '0', path: '/cart' },
+  ];
+
+  const menuItems = [
+    { icon: 'receipt_long', label: 'My Orders', subtitle: 'Track and review past orders', path: '/orders' },
+    { icon: 'favorite_border', label: 'Wishlist', subtitle: 'Your saved pieces', path: '/wishlist' },
+    { icon: 'shopping_bag', label: 'My Cart', subtitle: 'View items in your cart', path: '/cart' },
+    { icon: 'location_on', label: 'Addresses', subtitle: 'Manage delivery addresses', path: null },
+    { icon: 'credit_card', label: 'Payment Methods', subtitle: 'Cards and payment options', path: null },
+    { icon: 'notifications_none', label: 'Notifications', subtitle: 'Order updates and promotions', path: null },
+    { icon: 'help_outline', label: 'Help & Support', subtitle: 'FAQ, returns, and contact', path: null },
+  ];
 
   return (
     <div className="profile-page">
@@ -35,12 +60,13 @@ const ProfilePage = () => {
 
       {/* Stats */}
       <div className="profile-stats">
-        {[
-          { label: 'Orders', value: isLoggedIn ? '2' : '0' },
-          { label: 'Wishlist', value: isLoggedIn ? '5' : '0' },
-          { label: 'Reviews', value: isLoggedIn ? '1' : '0' },
-        ].map(stat => (
-          <div key={stat.label} className="profile-stat">
+        {stats.map(stat => (
+          <div
+            key={stat.label}
+            className="profile-stat"
+            onClick={() => stat.path && navigate(stat.path)}
+            style={{ cursor: stat.path ? 'pointer' : 'default' }}
+          >
             <span className="profile-stat-value">{stat.value}</span>
             <span className="profile-stat-label">{stat.label}</span>
           </div>
@@ -50,8 +76,8 @@ const ProfilePage = () => {
       {/* Sign in CTA / Logout */}
       <div className="profile-cta">
         {isLoggedIn ? (
-          <button 
-            id="profile-logout-btn" 
+          <button
+            id="profile-logout-btn"
             className="btn btn-secondary btn-full btn-lg"
             onClick={() => logout()}
           >
@@ -59,8 +85,8 @@ const ProfilePage = () => {
             Sign Out
           </button>
         ) : (
-          <button 
-            id="profile-signin-btn" 
+          <button
+            id="profile-signin-btn"
             className="btn btn-primary btn-full btn-lg"
             onClick={() => navigate('/login')}
           >
@@ -73,7 +99,12 @@ const ProfilePage = () => {
       {/* Menu */}
       <div className="profile-menu">
         {menuItems.map(item => (
-          <button key={item.label} className="profile-menu-item">
+          <button
+            key={item.label}
+            className="profile-menu-item"
+            onClick={() => item.path && navigate(item.path)}
+            style={{ opacity: item.path ? 1 : 0.65 }}
+          >
             <div className="profile-menu-icon">
               <span className="material-icons" style={{ fontSize: '1.25rem' }}>{item.icon}</span>
             </div>

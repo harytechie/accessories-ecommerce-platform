@@ -1,20 +1,46 @@
 // src/pages/Auth/LoginPage.jsx
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import './AuthPage.css';
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, loginWithGoogle } = useAuth();
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const email = formData.get('email');
     const password = formData.get('password');
-    
-    if (login(email, password)) {
+
+    setError('');
+    setLoading(true);
+    try {
+      await login(email, password);
       navigate('/profile');
+    } catch (err) {
+      setError('Invalid email or password. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setError('');
+    setGoogleLoading(true);
+    try {
+      await loginWithGoogle();
+      navigate('/profile');
+    } catch (err) {
+      if (err.code !== 'auth/popup-closed-by-user') {
+        setError('Google sign-in failed. Please try again.');
+      }
+    } finally {
+      setGoogleLoading(false);
     }
   };
 
@@ -74,8 +100,10 @@ const LoginPage = () => {
               <Link to="#" className="auth-forgot-password">Forgot password?</Link>
             </div>
 
-            <button className="btn btn-primary btn-full btn-lg" type="submit">
-              Sign In
+            {error && <p className="auth-error">{error}</p>}
+
+            <button className="btn btn-primary btn-full btn-lg" type="submit" disabled={loading}>
+              {loading ? 'Signing in…' : 'Sign In'}
             </button>
 
             <div className="auth-divider">
@@ -84,13 +112,18 @@ const LoginPage = () => {
               <div className="auth-divider-line"></div>
             </div>
 
-            <button className="auth-social-btn" type="button">
-              <img 
-                src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" 
-                alt="Google" 
+            <button
+              className="auth-social-btn"
+              type="button"
+              onClick={handleGoogleLogin}
+              disabled={googleLoading}
+            >
+              <img
+                src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png"
+                alt="Google"
                 style={{ width: '18px', height: '18px' }}
               />
-              Continue with Google
+              {googleLoading ? 'Redirecting…' : 'Continue with Google'}
             </button>
           </form>
 

@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { CartProvider } from './context/CartContext';
 import { ToastProvider } from './context/ToastContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { WishlistProvider } from './context/WishlistContext';
 import Header from './components/Header/Header';
 import BottomNav from './components/BottomNav/BottomNav';
 import HomePage from './pages/HomePage/HomePage';
@@ -15,6 +16,8 @@ import ProfilePage from './pages/ProfilePage/ProfilePage';
 import LoginPage from './pages/Auth/LoginPage';
 import SignupPage from './pages/Auth/SignupPage';
 import AboutPage from './pages/AboutPage/AboutPage';
+import OrdersPage from './pages/OrdersPage/OrdersPage';
+import WishlistPage from './pages/WishlistPage/WishlistPage';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -49,6 +52,7 @@ const Layout = ({ children }) => (
 function App() {
   return (
     <AuthProvider>
+      <WishlistProvider>
       <CartProvider>
         <ToastProvider>
           <Router>
@@ -62,10 +66,13 @@ function App() {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<SignupPage />} />
               <Route path="/about" element={<Layout><AboutPage /></Layout>} />
+              <Route path="/orders" element={<Layout><ProtectedRoute><OrdersPage /></ProtectedRoute></Layout>} />
+              <Route path="/wishlist" element={<Layout><ProtectedRoute><WishlistPage /></ProtectedRoute></Layout>} />
             </Routes>
           </Router>
         </ToastProvider>
       </CartProvider>
+      </WishlistProvider>
     </AuthProvider>
   );
 }
