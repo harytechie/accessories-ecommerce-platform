@@ -2,12 +2,11 @@
 .product-list-page {
   min-height: 100vh;
   padding-top: var(--nav-height);
-  padding-bottom: var(--bottom-nav-height);
 }
 
 .plp-header {
   background: var(--color-surface-container-low);
-  padding: var(--space-8) var(--space-5) var(--space-6);
+  padding: var(--space-4) var(--space-5) var(--space-5);
 }
 
 .plp-header-inner {

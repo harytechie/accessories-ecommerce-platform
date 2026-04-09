@@ -2,7 +2,6 @@
 .profile-page {
   min-height: 100vh;
   padding-top: var(--nav-height);
-  padding-bottom: var(--bottom-nav-height);
 }
 
 .profile-header {

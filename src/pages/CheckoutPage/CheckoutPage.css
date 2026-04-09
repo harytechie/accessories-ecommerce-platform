@@ -2,7 +2,6 @@
 .checkout-page {
   min-height: 100vh;
   padding-top: var(--nav-height);
-  padding-bottom: calc(var(--bottom-nav-height) + 2rem);
   background: var(--color-background);
 }
 

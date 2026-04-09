@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useToast } from '../../context/ToastContext';
-import { getProductById, getProductsByCategory } from '../../data/products';
+import { getProductById, productData } from '../../data/products';
 import ProductImage from '../../components/ProductImage/ProductImage';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import './ProductDetailPage.css';
@@ -31,9 +31,8 @@ const ProductDetailPage = () => {
       if (fetchedProduct.sizes?.length > 0) setSelectedSize(fetchedProduct.sizes[0]);
       if (fetchedProduct.colors?.length > 0) setSelectedColor(fetchedProduct.colors[0]);
 
-      const categoryProducts = getProductsByCategory(fetchedProduct.category);
-      const filtered = categoryProducts.filter(p => p.id !== fetchedProduct.id);
-      const shuffled = filtered.sort(() => Math.random() - 0.5).slice(0, 4);
+      const allProducts = productData.filter(p => p.id !== fetchedProduct.id);
+      const shuffled = allProducts.sort(() => Math.random() - 0.5).slice(0, 12);
       setSuggestedProducts(shuffled);
     }
   }, [id]);
@@ -122,11 +121,11 @@ const ProductDetailPage = () => {
 
           {/* Price */}
           <div className="pdp-price-row">
-            <span className="pdp-price">${product.price?.toFixed(2)}</span>
+            <span className="pdp-price">₹{product.price?.toFixed(2)}</span>
             {product.originalPrice && (
               <>
-                <span className="pdp-original-price">${product.originalPrice.toFixed(2)}</span>
-                <span className="pdp-savings">Save ${savings.toFixed(2)}</span>
+                <span className="pdp-original-price">₹{product.originalPrice.toFixed(2)}</span>
+                <span className="pdp-savings">Save ₹{savings.toFixed(2)}</span>
               </>
             )}
           </div>
@@ -196,10 +195,10 @@ const ProductDetailPage = () => {
           <div className="section-header">
             <h2 className="section-title">
               <span>You might also like</span>
-              More from {product.category}
+              More for you
             </h2>
           </div>
-          <div className="products-grid">
+          <div className="pdp-suggested-grid">
             {suggestedProducts.map(p => (
               <ProductCard key={p.id} product={p} />
             ))}
@@ -212,7 +211,7 @@ const ProductDetailPage = () => {
         <div className="pdp-sticky-inner">
           <div className="pdp-sticky-price">
             <p className="pdp-sticky-price-label">Total</p>
-            <p className="pdp-sticky-price-value">${(product.price * quantity).toFixed(2)}</p>
+            <p className="pdp-sticky-price-value">₹{(product.price * quantity).toFixed(2)}</p>
           </div>
 
           <div className="pdp-sticky-actions">

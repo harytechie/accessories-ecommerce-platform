@@ -309,7 +309,7 @@ const CheckoutPage = () => {
                 ) : (
                   <>
                     <span className="material-icons" style={{ fontSize: '1rem' }}>lock</span>
-                    Place Order · ${total.toFixed(2)}
+                    Place Order · ₹{total.toFixed(2)}
                   </>
                 )}
               </button>
@@ -358,28 +358,28 @@ const CheckoutPage = () => {
                     Qty: {item.quantity} · {item.selectedSize}
                   </p>
                 </div>
-                <span className="checkout-order-item-price">${(item.price * item.quantity).toFixed(2)}</span>
+                <span className="checkout-order-item-price">₹{(item.price * item.quantity).toFixed(2)}</span>
               </div>
             ))}
 
             <div className="checkout-totals">
               <div className="checkout-total-row">
                 <span>Subtotal</span>
-                <span>${subtotal.toFixed(2)}</span>
+                <span>₹{subtotal.toFixed(2)}</span>
               </div>
               <div className="checkout-total-row">
                 <span>Shipping</span>
                 <span style={{ color: shipping === 0 ? '#4a7c59' : 'inherit' }}>
-                  {shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}`}
+                  {shipping === 0 ? 'Free' : `₹${shipping.toFixed(2)}`}
                 </span>
               </div>
               <div className="checkout-total-row">
                 <span>Tax</span>
-                <span>${tax.toFixed(2)}</span>
+                <span>₹{tax.toFixed(2)}</span>
               </div>
               <div className="checkout-total-row grand">
                 <span>Total</span>
-                <span className="val">${total.toFixed(2)}</span>
+                <span className="val">₹{total.toFixed(2)}</span>
               </div>
             </div>
           </div>

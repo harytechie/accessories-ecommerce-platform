@@ -2,7 +2,6 @@
 .pdp {
   min-height: 100vh;
   padding-top: var(--nav-height);
-  padding-bottom: calc(var(--bottom-nav-height) + 6rem);
 }
 
 .pdp-back-btn {
@@ -279,10 +278,17 @@
   margin-bottom: var(--space-5);
 }
 
-.pdp-suggested .products-grid {
+.pdp-suggested-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-4);
+  gap: var(--space-3);
+}
+
+@media (min-width: 480px) {
+  .pdp-suggested-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+  }
 }
 
 @media (min-width: 768px) {
@@ -301,5 +307,9 @@
 
   .pdp-hero-img {
     aspect-ratio: 3/4;
+  }
+
+  .pdp-suggested-grid {
+    grid-template-columns: repeat(4, 1fr);
   }
 }

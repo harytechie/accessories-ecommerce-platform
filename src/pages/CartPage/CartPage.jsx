@@ -61,7 +61,7 @@ const CartItem = ({ item }) => {
             >+</button>
           </div>
 
-          <span className="cart-item-price">${(item.price * item.quantity).toFixed(2)}</span>
+          <span className="cart-item-price">₹{(item.price * item.quantity).toFixed(2)}</span>
 
           <button
             className="cart-item-remove"
@@ -173,17 +173,17 @@ const CartPage = () => {
 
             <div className="cart-summary-row">
               <span>Subtotal</span>
-              <span className="cart-summary-value">${subtotal.toFixed(2)}</span>
+              <span className="cart-summary-value">₹{subtotal.toFixed(2)}</span>
             </div>
             <div className="cart-summary-row">
               <span>Shipping</span>
               <span className={`cart-summary-value ${shipping === 0 ? 'free' : ''}`}>
-                {shipping === 0 ? 'Free ✓' : `$${shipping.toFixed(2)}`}
+                {shipping === 0 ? 'Free ✓' : `₹${shipping.toFixed(2)}`}
               </span>
             </div>
             <div className="cart-summary-row">
               <span>Tax (5%)</span>
-              <span className="cart-summary-value">${tax.toFixed(2)}</span>
+              <span className="cart-summary-value">₹{tax.toFixed(2)}</span>
             </div>
 
             {shipping > 0 && (
@@ -195,13 +195,13 @@ const CartPage = () => {
                 color: 'var(--color-on-surface-variant)',
                 marginBottom: 'var(--space-2)',
               }}>
-                Add <strong style={{ color: 'var(--color-primary)' }}>${(200 - subtotal).toFixed(2)}</strong> more for free shipping!
+                Add <strong style={{ color: 'var(--color-primary)' }}>₹{(200 - subtotal).toFixed(2)}</strong> more for free shipping!
               </div>
             )}
 
             <div className="cart-summary-row total">
               <span>Total</span>
-              <span className="cart-summary-value total-val">${total.toFixed(2)}</span>
+              <span className="cart-summary-value total-val">₹{total.toFixed(2)}</span>
             </div>
 
             <button

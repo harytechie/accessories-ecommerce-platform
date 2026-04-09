@@ -41,7 +41,7 @@ const Layout = ({ children }) => (
   <>
     <ScrollToTop />
     <Header />
-    <main style={{ minHeight: '100vh', paddingTop: 'var(--nav-height)', paddingBottom: 'var(--bottom-nav-height)' }}>{children}</main>
+    <main style={{ minHeight: '100vh', paddingBottom: 'var(--bottom-nav-height)' }}>{children}</main>
     <BottomNav />
   </>
 );
