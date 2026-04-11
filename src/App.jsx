@@ -18,6 +18,7 @@ import SignupPage from './pages/Auth/SignupPage';
 import AboutPage from './pages/AboutPage/AboutPage';
 import OrdersPage from './pages/OrdersPage/OrdersPage';
 import WishlistPage from './pages/WishlistPage/WishlistPage';
+import HelpPage from './pages/HelpPage/HelpPage';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -68,6 +69,7 @@ function App() {
               <Route path="/about" element={<Layout><AboutPage /></Layout>} />
               <Route path="/orders" element={<Layout><ProtectedRoute><OrdersPage /></ProtectedRoute></Layout>} />
               <Route path="/wishlist" element={<Layout><ProtectedRoute><WishlistPage /></ProtectedRoute></Layout>} />
+              <Route path="/help" element={<Layout><HelpPage /></Layout>} />
             </Routes>
           </Router>
         </ToastProvider>

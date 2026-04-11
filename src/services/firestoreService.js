@@ -119,19 +119,27 @@ export const placeOrderFS = async (uid, { items, subtotal, shipping, tax, total,
 };
 
 /**
- * Fetch all orders belonging to a user, sorted newest first.
+ * Fetch all orders belonging to a user.
+ * Sorted client-side to avoid requiring composite indexes in Firestore.
  */
 export const getOrdersFS = async (uid) => {
   const q = query(
     collection(db, 'orders'),
-    where('userId', '==', uid),
-    orderBy('createdAt', 'desc')
+    where('userId', '==', uid)
   );
+  
   const snap = await getDocs(q);
-  return snap.docs.map((d) => ({
-    id: d.id,
-    ...d.data(),
-    // Convert Firestore Timestamp → JS Date for display
-    createdAt: d.data().createdAt?.toDate?.() || new Date(),
-  }));
+  
+  const orders = snap.docs.map((d) => {
+    const data = d.data();
+    return {
+      id: d.id,
+      ...data,
+      // Convert Firestore Timestamp → JS Date for display
+      createdAt: data.createdAt?.toDate?.() || new Date(data.createdAt || Date.now()),
+    };
+  });
+
+  // Sort newest first client-side
+  return orders.sort((a, b) => b.createdAt - a.createdAt);
 };

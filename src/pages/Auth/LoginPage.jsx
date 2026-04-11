@@ -33,11 +33,18 @@ const LoginPage = () => {
     setError('');
     setGoogleLoading(true);
     try {
+      console.log("LoginPage: Starting Google login...");
       await loginWithGoogle();
+      console.log("LoginPage: SUCCESS");
       navigate('/profile');
     } catch (err) {
+      console.error("LoginPage: ERROR CODE:", err.code);
+      console.error("LoginPage: ERROR MESSAGE:", err.message);
+      
       if (err.code !== 'auth/popup-closed-by-user') {
-        setError('Google sign-in failed. Please try again.');
+        const errorMsg = 'Google sign-in failed: ' + err.message;
+        setError(errorMsg);
+        alert(errorMsg); // Show alert as requested for immediate debugging
       }
     } finally {
       setGoogleLoading(false);

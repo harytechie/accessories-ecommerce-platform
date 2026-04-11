@@ -287,7 +287,7 @@ export const productData = [
   },
   {
     id: 15,
-    name: "Personalized Leather Wallet & Keychain Set",
+    name: "Personalized Leather Wallet & Ke",
     price: 110.00,
     originalPrice: 140.00,
     image: "/assets/gifts/gift8.jpeg",

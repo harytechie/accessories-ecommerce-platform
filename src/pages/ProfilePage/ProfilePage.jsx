@@ -38,7 +38,7 @@ const ProfilePage = () => {
     { icon: 'location_on', label: 'Addresses', subtitle: 'Manage delivery addresses', path: null },
     { icon: 'credit_card', label: 'Payment Methods', subtitle: 'Cards and payment options', path: null },
     { icon: 'notifications_none', label: 'Notifications', subtitle: 'Order updates and promotions', path: null },
-    { icon: 'help_outline', label: 'Help & Support', subtitle: 'FAQ, returns, and contact', path: null },
+    { icon: 'help_outline', label: 'Help & Support', subtitle: 'FAQ, returns, and contact', path: '/help' },
   ];
 
   return (

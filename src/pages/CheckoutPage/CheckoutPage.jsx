@@ -6,13 +6,47 @@ import { useToast } from '../../context/ToastContext';
 import { useAuth } from '../../context/AuthContext';
 import { placeOrderFS } from '../../services/firestoreService';
 import ProductImage from '../../components/ProductImage/ProductImage';
+import emailjs from '@emailjs/browser';
 import './CheckoutPage.css';
+
+// ── EmailJS initialization ──────────────────────────
+emailjs.init('Rdh1X8rVEEQi73Vay');
 
 const STEPS = [
   { id: 'contact', label: 'Contact' },
   { id: 'shipping', label: 'Shipping' },
   { id: 'payment', label: 'Payment' },
 ];
+
+// ── EmailJS config ──────────────────────────────────
+const EMAILJS_SERVICE_ID  = 'service_r01upqn';
+const EMAILJS_TEMPLATE_ID = 'template_91z3wu4';
+const EMAILJS_PUBLIC_KEY  = 'Rdh1X8rVEEQi73Vay';
+
+const sendOrderEmail = async (order, orderId) => {
+  const shortId = `ATL-${orderId.substring(0, 8).toUpperCase()}`;
+  const templateParams = {
+    order_id:       shortId,
+    customer_name:  `${order.address.firstName} ${order.address.lastName}`,
+    customer_email: order.address.email,
+    customer_phone: order.address.phone,
+    address:        `${order.address.street}, ${order.address.city}, ${order.address.state}, ${order.address.country}`,
+    items:          order.items
+                      .map(item => `${item.name} x${item.quantity} — ₹${(item.price * item.quantity).toFixed(2)}`)
+                      .join('\n'),
+    total:          order.total.toFixed(2),
+    payment_method: order.paymentMethod?.toUpperCase() || 'N/A',
+  };
+
+  console.log("📤 Sending Order Email:", templateParams);
+
+  try {
+    const res = await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+    console.log("✅ SUCCESS:", res);
+  } catch (err) {
+    console.error("❌ ERROR:", err);
+  }
+};
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
@@ -76,6 +110,9 @@ const CheckoutPage = () => {
         address,
         paymentMethod,
       });
+
+      // 🔥 Send order notification email via EmailJS
+      sendOrderEmail({ items, total, address, paymentMethod }, newOrderId);
 
       setOrderId(newOrderId);
       clearCart();

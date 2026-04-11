@@ -4,11 +4,47 @@ import { useNavigate } from 'react-router-dom';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import ProductImage from '../../components/ProductImage/ProductImage';
 import { productData as products, categories } from '../../data/products';
+import { useToast } from '../../context/ToastContext';
+import emailjs from '@emailjs/browser';
 import './HomePage.css';
+
+// ── EmailJS initialization ──────────────────────────
+emailjs.init('Rdh1X8rVEEQi73Vay');
+
+// ── EmailJS config ──
+const EMAILJS_SERVICE_ID  = 'service_r01upqn';
+const EMAILJS_TEMPLATE_ID = 'template_91z3wu4';
+const EMAILJS_PUBLIC_KEY  = 'Rdh1X8rVEEQi73Vay';
 
 const HomePage = () => {
   const navigate = useNavigate();
+  const { addToast } = useToast();
   const [activeCategory, setActiveCategory] = useState('all');
+  const [isTestingEmail, setIsTestingEmail] = useState(false);
+
+  const handleTestEmail = async () => {
+    setIsTestingEmail(true);
+    const testParams = {
+      customer_name: 'Test Customer',
+      customer_email: 'test@example.com',
+      address: '123 Test Street, Test City',
+      items: 'Test Item 1 x1, Test Item 2 x2',
+      total: '₹1234.56',
+    };
+
+    console.log("📤 Sending Test Email:", testParams);
+
+    try {
+      const res = await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, testParams);
+      console.log("✅ SUCCESS:", res);
+      addToast('✅ Test Email Sent Successfully!', 'check_circle');
+    } catch (err) {
+      console.error('❌ Email error:', err);
+      addToast('❌ Test Email Failed. Check console.', 'error');
+    } finally {
+      setIsTestingEmail(false);
+    }
+  };
 
   const giftProducts = products.filter(p => p.category === 'gifts');
 
@@ -48,6 +84,14 @@ const HomePage = () => {
                 onClick={() => navigate('/products/gifts')}
               >
                 Gift Ideas
+              </button>
+              <button
+                id="test-email-btn"
+                className="btn btn-tertiary"
+                onClick={handleTestEmail}
+                disabled={isTestingEmail}
+              >
+                {isTestingEmail ? 'Testing...' : 'Test EmailJS'}
               </button>
             </div>
           </div>

@@ -44,20 +44,31 @@ const OrdersPage = () => {
 
   useEffect(() => {
     if (authLoading) return;
-    if (!isLoggedIn || !user?.uid) {
+    
+    if (!isLoggedIn) {
       navigate('/login');
       return;
     }
 
+    if (!user?.uid) return;
+
     let cancelled = false;
     const fetchOrders = async () => {
       setLoading(true);
+      setError(null);
+      console.log('OrdersPage: Fetching orders for user', user.uid);
+      
       try {
         const data = await getOrdersFS(user.uid);
-        if (!cancelled) setOrders(data);
+        if (!cancelled) {
+          console.log('OrdersPage: Received', data.length, 'orders');
+          setOrders(data);
+        }
       } catch (err) {
-        console.error('Failed to fetch orders:', err);
-        if (!cancelled) setError('Failed to load orders. Please try again.');
+        console.error('OrdersPage: Failed to fetch orders:', err);
+        if (!cancelled) {
+          setError('We encountered an issue loading your history. Please try again later.');
+        }
       } finally {
         if (!cancelled) setLoading(false);
       }

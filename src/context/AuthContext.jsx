@@ -56,9 +56,17 @@ export const AuthProvider = ({ children }) => {
 
   // Login with Google popup
   const loginWithGoogle = async () => {
-    const provider = new GoogleAuthProvider();
-    const result = await signInWithPopup(auth, provider);
-    return result.user;
+    try {
+      console.log("AuthContext: Starting Google login...");
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      console.log("AuthContext: SUCCESS:", result.user);
+      return result.user;
+    } catch (error) {
+      console.error("AuthContext: ERROR CODE:", error.code);
+      console.error("AuthContext: ERROR MESSAGE:", error.message);
+      throw error;
+    }
   };
 
   // Logout
