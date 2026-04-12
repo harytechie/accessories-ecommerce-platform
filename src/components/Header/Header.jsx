@@ -31,8 +31,8 @@ const Header = () => {
     <header className={`header ${scrolled ? 'scrolled' : ''}`}>
       <div className="header-inner">
         <div className="header-logo" onClick={() => navigate('/')} role="button" tabIndex={0}>
-          <span className="header-logo-title">Atelier</span>
-          <span className="header-logo-tagline">The Digital Boutique</span>
+          <span className="header-logo-title">ATELIER</span>
+          <span className="header-logo-tagline">THE DIGITAL BOUTIQUE</span>
         </div>
 
         <div className="header-actions">

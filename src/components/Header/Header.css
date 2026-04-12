@@ -32,30 +32,44 @@
   display: flex;
   flex-direction: column;
   line-height: 1;
+  flex-shrink: 0;
 }
 
 .header-logo-title {
   font-family: var(--font-serif);
   font-size: 1.5rem;
   font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--color-on-surface);
+  letter-spacing: 0.15em;
+  background: linear-gradient(135deg, #c9a646 0%, #f5e6b3 40%, #ffffff 50%, #f5e6b3 60%, #c9a646 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
   cursor: pointer;
+  transition: opacity var(--transition-base);
+  margin-bottom: 2px;
+}
+
+.header-logo-title:hover {
+  opacity: 0.8;
 }
 
 .header-logo-tagline {
-  font-size: 0.65rem;
-  font-weight: 500;
+  font-size: 0.55rem;
+  font-weight: 600;
   color: var(--color-on-surface-variant);
-  letter-spacing: 0.12em;
+  letter-spacing: 0.4em;
   text-transform: uppercase;
-  margin-top: 1px;
+  margin-top: 0;
+  opacity: 0.8;
+  margin-left: 0.1em;
 }
 
 .header-actions {
   display: flex;
   align-items: center;
   gap: var(--space-2);
+  flex-shrink: 0;
 }
 
 .header-cart-btn {
@@ -125,7 +139,7 @@
 }
 
 .header-search-container.open .header-search-input {
-  width: 140px;
+  width: 110px;
 }
 
 @media (min-width: 640px) {

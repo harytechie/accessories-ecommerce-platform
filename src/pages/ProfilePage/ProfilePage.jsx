@@ -120,7 +120,7 @@ const ProfilePage = () => {
       {/* App version */}
       <div className="profile-footer">
         <p>Atelier Boutique</p>
-        <p>Version 1.0.0 · © 2025 Atelier Studio</p>
+        <p>Version 1.0.0 · A Creation by Hary © 2026</p>
       </div>
     </div>
   );

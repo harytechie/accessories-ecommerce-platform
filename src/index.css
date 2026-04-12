@@ -42,12 +42,17 @@
   --color-on-error: #fff7f6;
   --color-error-container: #fd795a;
 
+  /* Premium Gold Branding */
+  --color-gold-deep: #c9a646;
+  --color-gold-light: #f5e6b3;
+  --gold-gradient: linear-gradient(135deg, #c9a646 0%, #f5e6b3 50%, #c9a646 100%);
+
   --color-inverse-surface: #0d0f0d;
   --color-inverse-on-surface: #9d9d9a;
   --color-inverse-primary: #f9b1b1;
 
   /* Typography */
-  --font-serif: 'Noto Serif', Georgia, serif;
+  --font-serif: 'Playfair Display', 'Noto Serif', Georgia, serif;
   --font-sans: 'Manrope', system-ui, sans-serif;
 
   /* Spacing */

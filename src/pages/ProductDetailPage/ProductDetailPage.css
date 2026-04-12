@@ -40,8 +40,121 @@
 
 .pdp-hero-img {
   width: 100%;
-  aspect-ratio: 4/3;
+  aspect-ratio: 3/4;
   object-fit: cover;
+  border-radius: var(--radius-xl);
+}
+
+.pdp-slider-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3/4;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  background: var(--color-surface-container-low);
+}
+
+.pdp-image-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pdp-image-track img {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.slider-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+  color: var(--color-on-surface);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.slider-nav:hover {
+  background: white;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.slider-nav.prev {
+  left: 16px;
+}
+
+.slider-nav.next {
+  right: 16px;
+}
+
+.slider-indicators {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.indicator-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.indicator-dot.active {
+  background: white;
+  width: 24px;
+  border-radius: 4px;
+}
+
+.pdp-wishlist-btn {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-on-surface-variant);
+  box-shadow: 0 4px 12px rgba(48, 51, 48, 0.1);
+  transition: all var(--transition-base);
+  z-index: 20;
+}
+
+.pdp-wishlist-btn:hover {
+  background: white;
+  transform: scale(1.1);
+  color: var(--color-primary);
+}
+
+.pdp-wishlist-btn.active {
+  color: var(--color-error);
+  background: white;
 }
 
 .pdp-hero-badge {
@@ -305,7 +418,8 @@
     overflow: hidden;
   }
 
-  .pdp-hero-img {
+  .pdp-hero-img,
+  .pdp-slider-container {
     aspect-ratio: 3/4;
   }
 

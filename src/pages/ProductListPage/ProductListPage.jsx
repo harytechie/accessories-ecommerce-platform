@@ -82,19 +82,6 @@ const ProductListPage = () => {
         </div>
       </div>
 
-      <div className="plp-category-bar">
-        {categories.map(cat => (
-          <button
-            key={cat.id}
-            id={`plp-cat-${cat.id}`}
-            className={`chip ${activeCategory === cat.id ? 'selected' : ''}`}
-            onClick={() => handleCategoryChange(cat.id)}
-          >
-            <span className="material-icons" style={{ fontSize: '0.9rem', marginRight: '4px' }}>{cat.icon}</span>
-            {cat.label}
-          </button>
-        ))}
-      </div>
 
       <div className="plp-toolbar">
         <span className="plp-result-count">

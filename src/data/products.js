@@ -8,6 +8,10 @@ export const productData = [
     price: 185.00,
     originalPrice: 220.00,
     image: "/assets/shawls/Rose_Silk_Burga_Shawl1.jpg",
+    images: [
+      "/assets/shawls/Rose_Silk_Burga_Shawl1.jpg",
+      "/assets/shawls/Rose_Silk_Burga_Shawl2.jpg"
+    ],
     category: "shawls",
     badge: "Bestseller",
     description: "Hand-woven from the finest organic silk sourced from artisan weavers with generations of craft mastery. This premium shawl drapes with effortless elegance, offering both warmth and timeless style.",

@@ -20,31 +20,6 @@ const HomePage = () => {
   const navigate = useNavigate();
   const { addToast } = useToast();
   const [activeCategory, setActiveCategory] = useState('all');
-  const [isTestingEmail, setIsTestingEmail] = useState(false);
-
-  const handleTestEmail = async () => {
-    setIsTestingEmail(true);
-    const testParams = {
-      customer_name: 'Test Customer',
-      customer_email: 'test@example.com',
-      address: '123 Test Street, Test City',
-      items: 'Test Item 1 x1, Test Item 2 x2',
-      total: '₹1234.56',
-    };
-
-    console.log("📤 Sending Test Email:", testParams);
-
-    try {
-      const res = await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, testParams);
-      console.log("✅ SUCCESS:", res);
-      addToast('✅ Test Email Sent Successfully!', 'check_circle');
-    } catch (err) {
-      console.error('❌ Email error:', err);
-      addToast('❌ Test Email Failed. Check console.', 'error');
-    } finally {
-      setIsTestingEmail(false);
-    }
-  };
 
   const giftProducts = products.filter(p => p.category === 'gifts');
 
@@ -62,8 +37,8 @@ const HomePage = () => {
           <div className="hero-content animate-fade-in-up">
             <p className="hero-eyebrow">New Collection 2026</p>
             <h1 className="hero-title">
-              AFRIN<br />
-              <em>Essence</em>
+              ELITE<br />
+              <em>STUDIO</em>
             </h1>
             <p className="hero-subtitle">
               Experience the tactile luxury of Burga Shawls and curated gifts
@@ -84,14 +59,6 @@ const HomePage = () => {
                 onClick={() => navigate('/products/gifts')}
               >
                 Gift Ideas
-              </button>
-              <button
-                id="test-email-btn"
-                className="btn btn-tertiary"
-                onClick={handleTestEmail}
-                disabled={isTestingEmail}
-              >
-                {isTestingEmail ? 'Testing...' : 'Test EmailJS'}
               </button>
             </div>
           </div>
@@ -167,25 +134,6 @@ const HomePage = () => {
         </blockquote>
       </section>
 
-      {/* ── Category Filter ─── */}
-      <section className="category-section" aria-label="Product categories">
-        <div className="category-scroll">
-          {categories.map(cat => (
-            <button
-              key={cat.id}
-              id={`cat-${cat.id}`}
-              className={`cat-card ${activeCategory === cat.id ? 'active' : ''}`}
-              onClick={() => setActiveCategory(cat.id)}
-              aria-pressed={activeCategory === cat.id}
-            >
-              <div className="cat-circle">
-                <span className="material-icons">{cat.icon}</span>
-              </div>
-              <span className="cat-label">{cat.label}</span>
-            </button>
-          ))}
-        </div>
-      </section>
 
       {/* ── Featured Products ─── */}
       <section className="featured-section" aria-label="Products">

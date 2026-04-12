@@ -2,6 +2,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
+import { useAuth } from '../../context/AuthContext';
+import { useWishlist } from '../../context/WishlistContext';
 import { useToast } from '../../context/ToastContext';
 import { getProductById, productData } from '../../data/products';
 import ProductImage from '../../components/ProductImage/ProductImage';
@@ -15,6 +17,8 @@ const ProductDetailPage = () => {
   const navigate = useNavigate();
   const { addItem } = useCart();
   const { addToast } = useToast();
+  const { isLoggedIn } = useAuth();
+  const { isWishlisted, toggleWishlist } = useWishlist();
 
   const [product, setProduct] = useState(null);
   const [suggestedProducts, setSuggestedProducts] = useState([]);
@@ -22,6 +26,8 @@ const ProductDetailPage = () => {
   const [selectedColor, setSelectedColor] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [addingToCart, setAddingToCart] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchedProduct = getProductById(id);
@@ -34,10 +40,38 @@ const ProductDetailPage = () => {
       const allProducts = productData.filter(p => p.id !== fetchedProduct.id);
       const shuffled = allProducts.sort(() => Math.random() - 0.5).slice(0, 12);
       setSuggestedProducts(shuffled);
+      setCurrentImageIndex(0);
     }
+    setLoading(false);
   }, [id]);
 
-  if (!product) {
+  const handleNextImage = () => {
+    if (product.images && product.images.length > 0) {
+      setCurrentImageIndex((prev) => (prev + 1) % product.images.length);
+    }
+  };
+
+  const handlePrevImage = () => {
+    if (product.images && product.images.length > 0) {
+      setCurrentImageIndex((prev) => (prev - 1 + product.images.length) % product.images.length);
+    }
+  };
+
+  const handleWishlist = async (e) => {
+    e.stopPropagation();
+    if (!isLoggedIn) {
+      addToast('Please sign in to use wishlist', 'favorite_border');
+      navigate('/login');
+      return;
+    }
+    const added = await toggleWishlist(product);
+    addToast(
+      added ? 'Added to wishlist ❤️' : 'Removed from wishlist',
+      added ? 'favorite' : 'favorite_border'
+    );
+  };
+
+  if (loading) {
     return (
       <div className="pdp-not-found page-wrapper" style={{ padding: "6rem 2rem", textAlign: "center" }}>
         <div className="skeleton" style={{ width: "60px", height: "60px", borderRadius: "50%", margin: "0 auto 2rem" }}></div>
@@ -78,27 +112,69 @@ const ProductDetailPage = () => {
       </div>
 
       <div className="pdp-layout" style={{ padding: '0 var(--space-5)' }}>
-        {/* Hero Image */}
+        {/* Hero Image / Slider */}
         <div className="pdp-hero">
-          {product.image ? (
-            <img
-              src={product.image}
-              alt={product.name}
-              className="pdp-hero-img"
-              style={{ width: '100%', aspectRatio: '4/3', borderRadius: 'var(--radius-xl)', minHeight: '300px', objectFit: 'cover' }}
-            />
-          ) : (
-            <ProductImage
-              product={product}
-              className="pdp-hero-img"
-              style={{ width: '100%', aspectRatio: '4/3', borderRadius: 'var(--radius-xl)', minHeight: '300px' }}
-            />
-          )}
+          <div className="pdp-slider-container">
+            {product.images && product.images.length > 0 ? (
+              <>
+                <div className="pdp-image-track" style={{ transform: `translateX(-${currentImageIndex * 100}%)` }}>
+                  {product.images.map((img, idx) => (
+                    <img
+                      key={idx}
+                      src={img}
+                      alt={`${product.name} ${idx + 1}`}
+                      className="pdp-hero-img"
+                    />
+                  ))}
+                </div>
+
+                {product.images.length > 1 && (
+                  <>
+                    <button className="slider-nav prev" onClick={handlePrevImage} aria-label="Previous image">
+                      <span className="material-icons">chevron_left</span>
+                    </button>
+                    <button className="slider-nav next" onClick={handleNextImage} aria-label="Next image">
+                      <span className="material-icons">chevron_right</span>
+                    </button>
+
+                    <div className="slider-indicators">
+                      {product.images.map((_, idx) => (
+                        <div
+                          key={idx}
+                          className={`indicator-dot ${currentImageIndex === idx ? 'active' : ''}`}
+                          onClick={() => setCurrentImageIndex(idx)}
+                        />
+                      ))}
+                    </div>
+                  </>
+                )}
+              </>
+            ) : product.image ? (
+              <img
+                src={product.image}
+                alt={product.name}
+                className="pdp-hero-img"
+              />
+            ) : (
+              <ProductImage product={product} className="pdp-hero-img" />
+            )}
+          </div>
+
           {product.badge && (
             <span className={`pdp-hero-badge product-card-badge ${badgeClass[product.badge]}`}>
               {product.badge}
             </span>
           )}
+
+          <button
+            className={`pdp-wishlist-btn ${isWishlisted(product.id) ? 'active' : ''}`}
+            onClick={handleWishlist}
+            aria-label={isWishlisted(product.id) ? 'Remove from wishlist' : 'Add to wishlist'}
+          >
+            <span className="material-icons">
+              {isWishlisted(product.id) ? 'favorite' : 'favorite_border'}
+            </span>
+          </button>
         </div>
 
         {/* Content */}
