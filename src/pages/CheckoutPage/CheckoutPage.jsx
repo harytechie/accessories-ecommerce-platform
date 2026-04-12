@@ -69,7 +69,7 @@ const CheckoutPage = () => {
     city: '',
     state: '',
     zipCode: '',
-    country: 'United Arab Emirates',
+    country: 'India',
     cardNumber: '',
     cardName: '',
     cardExpiry: '',
@@ -232,7 +232,7 @@ const CheckoutPage = () => {
                 </div>
                 <div className="form-group full-width">
                   <label className="form-label" htmlFor="checkout-phone">Phone Number</label>
-                  <input id="checkout-phone" type="tel" className="form-input" placeholder="+971 50 000 0000"
+                  <input id="checkout-phone" type="tel" className="form-input" placeholder="+91 90000 00000"
                     value={formData.phone} onChange={e => handleChange('phone', e.target.value)} />
                 </div>
               </div>
@@ -251,27 +251,27 @@ const CheckoutPage = () => {
               <div className="checkout-form-grid">
                 <div className="form-group">
                   <label className="form-label" htmlFor="checkout-first-name">First Name</label>
-                  <input id="checkout-first-name" type="text" className="form-input" placeholder="Layla"
+                  <input id="checkout-first-name" type="text" className="form-input" placeholder="Aarav"
                     value={formData.firstName} onChange={e => handleChange('firstName', e.target.value)} />
                 </div>
                 <div className="form-group">
                   <label className="form-label" htmlFor="checkout-last-name">Last Name</label>
-                  <input id="checkout-last-name" type="text" className="form-input" placeholder="Al Rashid"
+                  <input id="checkout-last-name" type="text" className="form-input" placeholder="Kumar"
                     value={formData.lastName} onChange={e => handleChange('lastName', e.target.value)} />
                 </div>
                 <div className="form-group full-width">
                   <label className="form-label" htmlFor="checkout-address">Street Address</label>
-                  <input id="checkout-address" type="text" className="form-input" placeholder="123 Palm Jumeirah"
+                  <input id="checkout-address" type="text" className="form-input" placeholder="45 Marine Drive"
                     value={formData.address} onChange={e => handleChange('address', e.target.value)} />
                 </div>
                 <div className="form-group">
                   <label className="form-label" htmlFor="checkout-city">City</label>
-                  <input id="checkout-city" type="text" className="form-input" placeholder="Dubai"
+                  <input id="checkout-city" type="text" className="form-input" placeholder="Mumbai"
                     value={formData.city} onChange={e => handleChange('city', e.target.value)} />
                 </div>
                 <div className="form-group">
                   <label className="form-label" htmlFor="checkout-zip">Postal Code</label>
-                  <input id="checkout-zip" type="text" className="form-input" placeholder="00000"
+                  <input id="checkout-zip" type="text" className="form-input" placeholder="400001"
                     value={formData.zipCode} onChange={e => handleChange('zipCode', e.target.value)} />
                 </div>
                 <div className="form-group full-width">
@@ -331,7 +331,7 @@ const CheckoutPage = () => {
                   </div>
                   <div className="form-group">
                     <label className="form-label" htmlFor="card-name">Cardholder Name</label>
-                    <input id="card-name" type="text" className="form-input" placeholder="Layla Al Rashid"
+                    <input id="card-name" type="text" className="form-input" placeholder="Aarav Kumar"
                       value={formData.cardName} onChange={e => handleChange('cardName', e.target.value)} />
                   </div>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-4)' }}>

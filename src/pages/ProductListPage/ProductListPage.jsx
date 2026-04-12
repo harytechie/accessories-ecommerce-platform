@@ -31,6 +31,14 @@ const ProductListPage = () => {
   const searchQuery = searchParams.get('search') || '';
   const [activeCategory, setActiveCategory] = useState(category);
   const [sortBy, setSortBy] = useState('featured');
+  const [isSortOpen, setIsSortOpen] = useState(false);
+
+  const sortOptions = [
+    { value: 'featured', label: 'Featured' },
+    { value: 'price-asc', label: 'Price: Low to High' },
+    { value: 'price-desc', label: 'Price: High to Low' },
+    { value: 'rating', label: 'Top Rated' },
+  ];
 
   useEffect(() => {
     setActiveCategory(category);
@@ -87,21 +95,29 @@ const ProductListPage = () => {
         <span className="plp-result-count">
           {filteredProducts.length} {filteredProducts.length === 1 ? 'piece' : 'pieces'}
         </span>
-        <div className="plp-sort-container">
-          <select
-            id="plp-sort-select"
-            className="plp-sort-select"
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-          >
-            <option value="featured">Featured</option>
-            <option value="price-asc">Price: Low to High</option>
-            <option value="price-desc">Price: High to Low</option>
-            <option value="rating">Top Rated</option>
-          </select>
-          <div className="plp-sort-icon">
+        <div className="plp-sort-container" onClick={() => setIsSortOpen(!isSortOpen)}>
+          <div className={`plp-sort-trigger ${isSortOpen ? 'active' : ''}`}>
+            <span>{sortOptions.find(o => o.value === sortBy)?.label}</span>
             <span className="material-icons">expand_more</span>
           </div>
+          
+          {isSortOpen && (
+            <div className="plp-sort-dropdown">
+              {sortOptions.map((option) => (
+                <div 
+                  key={option.value}
+                  className={`plp-sort-option ${sortBy === option.value ? 'selected' : ''}`}
+                  onClick={() => {
+                    setSortBy(option.value);
+                    setIsSortOpen(false);
+                  }}
+                >
+                  {option.label}
+                  {sortBy === option.value && <span className="material-icons">check</span>}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
