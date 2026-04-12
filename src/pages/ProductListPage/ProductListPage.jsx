@@ -73,9 +73,9 @@ const ProductListPage = () => {
       <div className="plp-header">
         <div className="plp-header-inner">
           <nav className="plp-breadcrumb" aria-label="Breadcrumb">
-            <span onClick={() => navigate('/')} className="plp-breadcrumb a">Home</span>
+            <span onClick={() => navigate('/')} className="plp-breadcrumb-item clickable">Home</span>
             <span className="plp-breadcrumb-sep">›</span>
-            <span>{searchQuery ? 'Search Results' : meta.title}</span>
+            <span className="plp-breadcrumb-item">{searchQuery ? 'Search Results' : meta.title}</span>
           </nav>
           <h1 className="plp-title">{pageTitle}</h1>
           <p className="plp-subtitle">{pageSubtitle}</p>

@@ -17,24 +17,29 @@
 .plp-breadcrumb {
   display: flex;
   align-items: center;
+  flex-wrap: nowrap;
   gap: var(--space-2);
   font-size: 0.8125rem;
   color: var(--color-on-surface-variant);
   margin-bottom: var(--space-3);
+  white-space: nowrap;
 }
 
-.plp-breadcrumb-sep {
-  font-size: 0.625rem;
-  color: var(--color-outline-variant);
-}
-
-.plp-breadcrumb a {
+.plp-breadcrumb-item.clickable {
   cursor: pointer;
   transition: color var(--transition-base);
 }
 
-.plp-breadcrumb a:hover {
+.plp-breadcrumb-item.clickable:hover {
   color: var(--color-primary);
+}
+
+.plp-breadcrumb-sep {
+  display: flex;
+  align-items: center;
+  font-size: 0.625rem;
+  color: var(--color-outline-variant);
+  user-select: none;
 }
 
 .plp-title {
