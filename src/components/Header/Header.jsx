@@ -8,7 +8,7 @@ import './Header.css';
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const { totalItems } = useCart();
-  const { isLoggedIn, user } = useAuth();
+  const { isLoggedIn, user, isAdmin } = useAuth();
   const navigate = useNavigate();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -36,6 +36,18 @@ const Header = () => {
         </div>
 
         <div className="header-actions">
+          {isAdmin && (
+            <button
+              id="header-admin-btn"
+              className="header-cart-btn"
+              aria-label="Admin Panel"
+              onClick={() => navigate('/admin')}
+              title="Admin Panel"
+              style={{ background: 'linear-gradient(135deg, rgba(201,166,70,0.12), rgba(201,166,70,0.22))' }}
+            >
+              <span className="material-icons" style={{ fontSize: '1.375rem', color: 'var(--color-gold-deep)' }}>admin_panel_settings</span>
+            </button>
+          )}
           <div className={`header-search-container ${isSearchOpen ? 'open' : ''}`}>
             <input
               type="text"

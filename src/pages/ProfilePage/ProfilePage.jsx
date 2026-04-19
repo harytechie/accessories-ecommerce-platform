@@ -9,7 +9,7 @@ import './ProfilePage.css';
 
 const ProfilePage = () => {
   const navigate = useNavigate();
-  const { user, isLoggedIn, logout } = useAuth();
+  const { user, isLoggedIn, logout, isAdmin } = useAuth();
   const { wishlistCount } = useWishlist();
   const { totalItems } = useCart();
   const [orderCount, setOrderCount] = useState(0);
@@ -32,6 +32,7 @@ const ProfilePage = () => {
   ];
 
   const menuItems = [
+    ...(isAdmin ? [{ icon: 'admin_panel_settings', label: 'Admin Panel', subtitle: 'Manage products, orders & users', path: '/admin' }] : []),
     { icon: 'receipt_long', label: 'My Orders', subtitle: 'Track and review past orders', path: '/orders' },
     { icon: 'favorite_border', label: 'Wishlist', subtitle: 'Your saved pieces', path: '/wishlist' },
     { icon: 'shopping_bag', label: 'My Cart', subtitle: 'View items in your cart', path: '/cart' },

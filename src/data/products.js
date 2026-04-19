@@ -52,9 +52,9 @@ export const productData = [
   },
   {
     id: 3,
-    name: "Thread Bangles Set",
-    price: 80.00,
-    originalPrice: 95.00,
+    name: "Royal Temple Gold Haram Set",
+    price: 940.00,
+    originalPrice: 1200.00,
     image: "/assets/accessories/jewel1.jpeg",
     category: "accessories",
     badge: "Sale",
@@ -118,7 +118,7 @@ export const productData = [
   },
   {
     id: 6,
-    name: "Linen Throw Blanket",
+    name: "Antique South Indian Layered Haram",
     price: 120.00,
     originalPrice: 140.00,
     image: "/assets/accessories/jewel2.jpeg",
@@ -141,7 +141,7 @@ export const productData = [
   {
     id: 7,
     name: "Custom Birthday Photo Collage Frames",
-    price: 45.00,
+    price: 230.00,
     originalPrice: null,
     image: "/assets/gifts/gift14.jpeg",
     category: "gifts",
@@ -248,7 +248,7 @@ export const productData = [
   {
     id: 13,
     name: "Eco-Luxury Gift Box",
-    price: 70.00,
+    price: 180.00,
     originalPrice: null,
     image: "/assets/gifts/gift5.jpeg",
     category: "gifts",
@@ -335,8 +335,8 @@ export const productData = [
   },
   {
     id: 17,
-    name: "Pearl Drop Earrings",
-    price: 95.00,
+    name: "Regal Double Layer Bridal Set",
+    price: 720.00,
     originalPrice: null,
     image: "/assets/accessories/jewel3.jpeg",
     category: "accessories",

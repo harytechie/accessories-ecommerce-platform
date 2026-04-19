@@ -19,6 +19,8 @@ import AboutPage from './pages/AboutPage/AboutPage';
 import OrdersPage from './pages/OrdersPage/OrdersPage';
 import WishlistPage from './pages/WishlistPage/WishlistPage';
 import HelpPage from './pages/HelpPage/HelpPage';
+import AdminRoute from './components/AdminRoute';
+import AdminPage from './pages/AdminPage/AdminPage';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -70,6 +72,7 @@ function App() {
               <Route path="/orders" element={<Layout><ProtectedRoute><OrdersPage /></ProtectedRoute></Layout>} />
               <Route path="/wishlist" element={<Layout><ProtectedRoute><WishlistPage /></ProtectedRoute></Layout>} />
               <Route path="/help" element={<Layout><HelpPage /></Layout>} />
+              <Route path="/admin" element={<Layout><AdminRoute><AdminPage /></AdminRoute></Layout>} />
             </Routes>
           </Router>
         </ToastProvider>
