@@ -5,7 +5,7 @@ import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 import { useWishlist } from '../../context/WishlistContext';
 import { useToast } from '../../context/ToastContext';
-import { getProductById, productData } from '../../data/products';
+import { getProductById, getAllProducts } from '../../services/productService';
 import ProductImage from '../../components/ProductImage/ProductImage';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import './ProductDetailPage.css';
@@ -30,19 +30,27 @@ const ProductDetailPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchedProduct = getProductById(id);
+    const fetchProduct = async () => {
+      setLoading(true);
+      try {
+        const fetchedProduct = await getProductById(id);
+        if (fetchedProduct) {
+          setProduct(fetchedProduct);
+          if (fetchedProduct.sizes?.length > 0) setSelectedSize(fetchedProduct.sizes[0]);
+          if (fetchedProduct.colors?.length > 0) setSelectedColor(fetchedProduct.colors[0]);
 
-    if (fetchedProduct) {
-      setProduct(fetchedProduct);
-      if (fetchedProduct.sizes?.length > 0) setSelectedSize(fetchedProduct.sizes[0]);
-      if (fetchedProduct.colors?.length > 0) setSelectedColor(fetchedProduct.colors[0]);
-
-      const allProducts = productData.filter(p => p.id !== fetchedProduct.id);
-      const shuffled = allProducts.sort(() => Math.random() - 0.5).slice(0, 12);
-      setSuggestedProducts(shuffled);
-      setCurrentImageIndex(0);
-    }
-    setLoading(false);
+          const allProducts = await getAllProducts();
+          const filtered = allProducts.filter(p => p.id !== fetchedProduct.id);
+          const shuffled = filtered.sort(() => Math.random() - 0.5).slice(0, 12);
+          setSuggestedProducts(shuffled);
+          setCurrentImageIndex(0);
+        }
+      } catch (error) {
+        console.error('Error fetching product:', error);
+      }
+      setLoading(false);
+    };
+    fetchProduct();
   }, [id]);
 
   const handleNextImage = () => {

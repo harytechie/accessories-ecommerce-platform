@@ -2,7 +2,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import ProductCard from '../../components/ProductCard/ProductCard';
-import { productData as products, categories } from '../../data/products';
+import { getAllProducts, getProductsByCategory } from '../../services/productService';
 import './ProductListPage.css';
 
 const categoryMeta = {
@@ -32,6 +32,8 @@ const ProductListPage = () => {
   const [activeCategory, setActiveCategory] = useState(category);
   const [sortBy, setSortBy] = useState('featured');
   const [isSortOpen, setIsSortOpen] = useState(false);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const sortOptions = [
     { value: 'featured', label: 'Featured' },
@@ -44,12 +46,27 @@ const ProductListPage = () => {
     setActiveCategory(category);
   }, [category]);
 
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true);
+      try {
+        const data = activeCategory === 'all'
+          ? await getAllProducts()
+          : await getProductsByCategory(activeCategory);
+        setProducts(data);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+        setProducts([]);
+      }
+      setLoading(false);
+    };
+    fetchProducts();
+  }, [activeCategory]);
+
   const meta = categoryMeta[activeCategory] || categoryMeta.all;
 
   const filteredProducts = useMemo(() => {
-    let list = activeCategory === 'all'
-      ? [...products]
-      : products.filter(p => p.category === activeCategory);
+    let list = [...products];
 
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
@@ -64,7 +81,7 @@ const ProductListPage = () => {
     else if (sortBy === 'rating') list.sort((a, b) => b.rating - a.rating);
 
     return list;
-  }, [activeCategory, sortBy, searchQuery]);
+  }, [products, sortBy, searchQuery]);
 
   const handleCategoryChange = (catId) => {
     setActiveCategory(catId);
@@ -122,7 +139,12 @@ const ProductListPage = () => {
       </div>
 
       <main className="plp-content">
-        {filteredProducts.length === 0 ? (
+        {loading ? (
+          <div className="plp-empty">
+            <div className="plp-empty-icon">⏳</div>
+            <h2 className="plp-empty-title">Loading products...</h2>
+          </div>
+        ) : filteredProducts.length === 0 ? (
           <div className="plp-empty">
             <div className="plp-empty-icon">✨</div>
             <h2 className="plp-empty-title">No items found</h2>
@@ -131,7 +153,7 @@ const ProductListPage = () => {
         ) : (
           <div className="products-grid">
             {filteredProducts.map(product => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard key={product.docId || product.id} product={product} />
             ))}
           </div>
         )}

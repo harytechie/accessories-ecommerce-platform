@@ -1,12 +1,19 @@
 // src/pages/HomePage/HomePage.jsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import ProductImage from '../../components/ProductImage/ProductImage';
-import { productData as products, categories } from '../../data/products';
+import { getAllProducts } from '../../services/productService';
 import { useToast } from '../../context/ToastContext';
 import emailjs from '@emailjs/browser';
 import './HomePage.css';
+
+const categories = [
+  { id: "all", label: "All", icon: "auto_awesome" },
+  { id: "shawls", label: "Shawls", icon: "checkroom" },
+  { id: "gifts", label: "Gifts", icon: "card_giftcard" },
+  { id: "accessories", label: "Accessories", icon: "diamond" },
+];
 
 // ── EmailJS initialization ──────────────────────────
 emailjs.init('Rdh1X8rVEEQi73Vay');
@@ -20,6 +27,23 @@ const HomePage = () => {
   const navigate = useNavigate();
   const { addToast } = useToast();
   const [activeCategory, setActiveCategory] = useState('all');
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true);
+      try {
+        const data = await getAllProducts();
+        setProducts(data);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+        setProducts([]);
+      }
+      setLoading(false);
+    };
+    fetchProducts();
+  }, []);
 
   const giftProducts = products.filter(p => p.category === 'gifts');
 
@@ -152,9 +176,13 @@ const HomePage = () => {
         </div>
 
         <div className="products-grid">
-          {filtered.slice(0, 4).map(product => (
-            <ProductCard key={product.docId || product.id} product={product} />
-          ))}
+          {loading ? (
+            <p>Loading products...</p>
+          ) : (
+            filtered.slice(0, 4).map(product => (
+              <ProductCard key={product.docId || product.id} product={product} />
+            ))
+          )}
         </div>
       </section>
 

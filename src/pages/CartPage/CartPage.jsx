@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useToast } from '../../context/ToastContext';
 import ProductImage from '../../components/ProductImage/ProductImage';
-import { productData as products } from '../../data/products';
 import './CartPage.css';
 
 const CartItem = ({ item }) => {
