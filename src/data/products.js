@@ -12,7 +12,7 @@ export const productData = [
       "/assets/shawls/Rose_Silk_Burga_Shawl1.jpg",
       "/assets/shawls/Rose_Silk_Burga_Shawl2.jpg"
     ],
-    category: "shawls",
+      category: "shawls",
     badge: "Bestseller",
     description: "Hand-woven from the finest organic silk sourced from artisan weavers with generations of craft mastery. This premium shawl drapes with effortless elegance, offering both warmth and timeless style.",
     details: [
